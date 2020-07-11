@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package hashicorp.waypoint_hzn;
+
+option go_package = "pb";
+
+// WaypointHzn is the gRPC service frontend for the more private direct
+// Horizon API. This exposes higher level operations that Waypoint uses
+// to register URLs with Horizon.
+service WaypointHzn {
+  rpc RegisterHostname(RegisterHostnameRequest) returns (RegisterHostnameResponse);
+}
+
+/********************************************************************
+* Shared Messages
+********************************************************************/
+
+message Label {
+  string name = 1;
+  string value = 2;
+}
+
+message LabelSet {
+  repeated Label labels = 1;
+}
+
+/********************************************************************
+* Hostname RPCs
+********************************************************************/
+
+message RegisterHostnameRequest {
+  // hostname to register, should just be a string like "api". This is
+  // a global namespace so if it is taken then an error will be returned.
+  // If this is not set or is blank, a default hostname will be generated.
+  string hostname = 1;
+
+  // labels to link this hostname to.
+  LabelSet labels = 2;
+}
+
+message RegisterHostnameResponse {
+  string fqdn = 1;
+}
+

@@ -1,0 +1,5 @@
+bin/
+tmp/
+
+# System-specific
+.DS_Store
