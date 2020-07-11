@@ -1,14 +1,17 @@
 package server
 
 import (
-	"github.com/hashicorp/go-hclog"
+	hznpb "github.com/hashicorp/horizon/pkg/pb"
+	"github.com/jinzhu/gorm"
 
 	"github.com/hashicorp/waypoint-hzn/pkg/pb"
 )
 
 // service implements pb.WaypointHznServer.
 type service struct {
-	L hclog.Logger
+	DB         *gorm.DB
+	Domain     string
+	HznControl hznpb.ControlManagementClient
 }
 
 var _ pb.WaypointHznServer = (*service)(nil)
