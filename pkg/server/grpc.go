@@ -38,7 +38,11 @@ func grpcInit(group *run.Group, opts *options) error {
 	s := grpc.NewServer(so...)
 
 	// Register our server
-	pb.RegisterWaypointHznServer(s, &service{})
+	pb.RegisterWaypointHznServer(s, &service{
+		DB:         opts.DB,
+		Domain:     opts.Domain,
+		HznControl: opts.HznControl,
+	})
 
 	// Add our gRPC server to the run group
 	group.Add(func() error {

@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS registrations (
   id SERIAL PRIMARY KEY,
   account_id bytea NOT NULL UNIQUE,
   email text NOT NULL,
-  name text
+  name text,
   created_at timestamptz NOT NULL DEFAULT NOW(),
   updated_at timestamptz NOT NULL DEFAULT NOW()
 );

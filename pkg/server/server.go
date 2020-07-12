@@ -5,6 +5,8 @@ import (
 	"net"
 
 	"github.com/hashicorp/go-hclog"
+	hznpb "github.com/hashicorp/horizon/pkg/pb"
+	"github.com/jinzhu/gorm"
 	"github.com/oklog/run"
 )
 
@@ -64,6 +66,15 @@ type options struct {
 	// random loopback port will be chosen. The gRPC server must run since it
 	// serves the HTTP endpoints as well.
 	GRPCListener net.Listener
+
+	// PostgreSQL DB connection.
+	DB *gorm.DB
+
+	// Client to Horizon control client
+	HznControl hznpb.ControlManagementClient
+
+	// Domain to use
+	Domain string
 }
 
 // WithContext sets the context for the server. When this context is cancelled,
@@ -82,4 +93,19 @@ func WithLogger(log hclog.Logger) Option {
 // cancel the context set with WithContext and wait for Run to return.
 func WithGRPC(ln net.Listener) Option {
 	return func(opts *options) { opts.GRPCListener = ln }
+}
+
+// WithDB sets the DB connection.
+func WithDB(db *gorm.DB) Option {
+	return func(opts *options) { opts.DB = db }
+}
+
+// WithHznControl
+func WithHznControl(client hznpb.ControlManagementClient) Option {
+	return func(opts *options) { opts.HznControl = client }
+}
+
+// WithDomain
+func WithDomain(d string) Option {
+	return func(opts *options) { opts.Domain = d }
 }

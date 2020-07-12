@@ -5,8 +5,10 @@ go 1.14
 require (
 	github.com/dustinkirkland/golang-petname v0.0.0-20191129215211-8e5a1ed0cff0
 	github.com/gogo/protobuf v1.3.1
+	github.com/golang-migrate/migrate/v4 v4.10.0
 	github.com/golang/protobuf v1.3.5 // indirect
 	github.com/hashicorp/go-hclog v0.14.1
+	github.com/hashicorp/go-multierror v1.1.0
 	github.com/hashicorp/horizon v0.0.0-20200711005133-bdd392d6469b
 	github.com/jinzhu/gorm v1.9.12
 	github.com/kr/text v0.2.0 // indirect
