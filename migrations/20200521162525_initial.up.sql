@@ -3,6 +3,8 @@ CREATE TABLE IF NOT EXISTS registrations (
   account_id bytea NOT NULL UNIQUE,
   email text NOT NULL,
   name text
+  created_at timestamptz NOT NULL DEFAULT NOW(),
+  updated_at timestamptz NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE IF NOT EXISTS hostnames (

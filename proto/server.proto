@@ -8,6 +8,7 @@ option go_package = "pb";
 // Horizon API. This exposes higher level operations that Waypoint uses
 // to register URLs with Horizon.
 service WaypointHzn {
+  rpc RegisterGuestAccount(RegisterGuestAccountRequest) returns (RegisterGuestAccountResponse);
   rpc RegisterHostname(RegisterHostnameRequest) returns (RegisterHostnameResponse);
 }
 
@@ -22,6 +23,22 @@ message Label {
 
 message LabelSet {
   repeated Label labels = 1;
+}
+
+/********************************************************************
+* Account RPCs
+********************************************************************/
+
+message RegisterGuestAccountRequest {
+  // server ID is the unique ULID of the Waypoint server requesting a
+  // guest account. If this server already has a guest account registered,
+  // the same token will be returned.
+  string server_id = 1;
+}
+
+message RegisterGuestAccountResponse {
+  // API token to use for protected endpoints.
+  string token = 1;
 }
 
 /********************************************************************

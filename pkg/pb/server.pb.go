@@ -122,6 +122,96 @@ func (m *LabelSet) GetLabels() []*Label {
 	return nil
 }
 
+type RegisterGuestAccountRequest struct {
+	// server ID is the unique ULID of the Waypoint server requesting a
+	// guest account. If this server already has a guest account registered,
+	// the same token will be returned.
+	ServerId string `protobuf:"bytes,1,opt,name=server_id,json=serverId,proto3" json:"server_id,omitempty"`
+}
+
+func (m *RegisterGuestAccountRequest) Reset()      { *m = RegisterGuestAccountRequest{} }
+func (*RegisterGuestAccountRequest) ProtoMessage() {}
+func (*RegisterGuestAccountRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_ad098daeda4239f7, []int{2}
+}
+func (m *RegisterGuestAccountRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *RegisterGuestAccountRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_RegisterGuestAccountRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *RegisterGuestAccountRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RegisterGuestAccountRequest.Merge(m, src)
+}
+func (m *RegisterGuestAccountRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *RegisterGuestAccountRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_RegisterGuestAccountRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_RegisterGuestAccountRequest proto.InternalMessageInfo
+
+func (m *RegisterGuestAccountRequest) GetServerId() string {
+	if m != nil {
+		return m.ServerId
+	}
+	return ""
+}
+
+type RegisterGuestAccountResponse struct {
+	// API token to use for protected endpoints.
+	Token string `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+}
+
+func (m *RegisterGuestAccountResponse) Reset()      { *m = RegisterGuestAccountResponse{} }
+func (*RegisterGuestAccountResponse) ProtoMessage() {}
+func (*RegisterGuestAccountResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_ad098daeda4239f7, []int{3}
+}
+func (m *RegisterGuestAccountResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *RegisterGuestAccountResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_RegisterGuestAccountResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *RegisterGuestAccountResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RegisterGuestAccountResponse.Merge(m, src)
+}
+func (m *RegisterGuestAccountResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *RegisterGuestAccountResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_RegisterGuestAccountResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_RegisterGuestAccountResponse proto.InternalMessageInfo
+
+func (m *RegisterGuestAccountResponse) GetToken() string {
+	if m != nil {
+		return m.Token
+	}
+	return ""
+}
+
 type RegisterHostnameRequest struct {
 	// hostname to register, should just be a string like "api". This is
 	// a global namespace so if it is taken then an error will be returned.
@@ -134,7 +224,7 @@ type RegisterHostnameRequest struct {
 func (m *RegisterHostnameRequest) Reset()      { *m = RegisterHostnameRequest{} }
 func (*RegisterHostnameRequest) ProtoMessage() {}
 func (*RegisterHostnameRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_ad098daeda4239f7, []int{2}
+	return fileDescriptor_ad098daeda4239f7, []int{4}
 }
 func (m *RegisterHostnameRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -184,7 +274,7 @@ type RegisterHostnameResponse struct {
 func (m *RegisterHostnameResponse) Reset()      { *m = RegisterHostnameResponse{} }
 func (*RegisterHostnameResponse) ProtoMessage() {}
 func (*RegisterHostnameResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_ad098daeda4239f7, []int{3}
+	return fileDescriptor_ad098daeda4239f7, []int{5}
 }
 func (m *RegisterHostnameResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -223,6 +313,8 @@ func (m *RegisterHostnameResponse) GetFqdn() string {
 func init() {
 	proto.RegisterType((*Label)(nil), "hashicorp.waypoint_hzn.Label")
 	proto.RegisterType((*LabelSet)(nil), "hashicorp.waypoint_hzn.LabelSet")
+	proto.RegisterType((*RegisterGuestAccountRequest)(nil), "hashicorp.waypoint_hzn.RegisterGuestAccountRequest")
+	proto.RegisterType((*RegisterGuestAccountResponse)(nil), "hashicorp.waypoint_hzn.RegisterGuestAccountResponse")
 	proto.RegisterType((*RegisterHostnameRequest)(nil), "hashicorp.waypoint_hzn.RegisterHostnameRequest")
 	proto.RegisterType((*RegisterHostnameResponse)(nil), "hashicorp.waypoint_hzn.RegisterHostnameResponse")
 }
@@ -230,27 +322,31 @@ func init() {
 func init() { proto.RegisterFile("server.proto", fileDescriptor_ad098daeda4239f7) }
 
 var fileDescriptor_ad098daeda4239f7 = []byte{
-	// 308 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x29, 0x4e, 0x2d, 0x2a,
-	0x4b, 0x2d, 0xd2, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x12, 0xcb, 0x48, 0x2c, 0xce, 0xc8, 0x4c,
-	0xce, 0x2f, 0x2a, 0xd0, 0x2b, 0x4f, 0xac, 0x2c, 0xc8, 0xcf, 0xcc, 0x2b, 0x89, 0xcf, 0xa8, 0xca,
-	0x53, 0x32, 0xe4, 0x62, 0xf5, 0x49, 0x4c, 0x4a, 0xcd, 0x11, 0x12, 0xe2, 0x62, 0xc9, 0x4b, 0xcc,
-	0x4d, 0x95, 0x60, 0x54, 0x60, 0xd4, 0xe0, 0x0c, 0x02, 0xb3, 0x85, 0x44, 0xb8, 0x58, 0xcb, 0x12,
-	0x73, 0x4a, 0x53, 0x25, 0x98, 0xc0, 0x82, 0x10, 0x8e, 0x92, 0x23, 0x17, 0x07, 0x58, 0x4b, 0x70,
-	0x6a, 0x89, 0x90, 0x29, 0x17, 0x5b, 0x0e, 0x88, 0x5d, 0x2c, 0xc1, 0xa8, 0xc0, 0xac, 0xc1, 0x6d,
-	0x24, 0xab, 0x87, 0xdd, 0x1e, 0x3d, 0xb0, 0x8e, 0x20, 0xa8, 0x62, 0xa5, 0x7c, 0x2e, 0xf1, 0xa0,
-	0xd4, 0xf4, 0xcc, 0xe2, 0x92, 0xd4, 0x22, 0x8f, 0xfc, 0xe2, 0x12, 0x90, 0x65, 0x41, 0xa9, 0x85,
-	0xa5, 0xa9, 0xc5, 0x25, 0x42, 0x52, 0x5c, 0x1c, 0x19, 0x50, 0x21, 0xa8, 0x5b, 0xe0, 0x7c, 0x21,
-	0x0b, 0xb8, 0x6d, 0x20, 0x07, 0x71, 0x1b, 0x29, 0xe0, 0xb5, 0x2d, 0x38, 0xb5, 0x04, 0x6e, 0xa1,
-	0x1e, 0x97, 0x04, 0xa6, 0x85, 0xc5, 0x05, 0xf9, 0x79, 0xc5, 0xa9, 0x20, 0x9f, 0xa7, 0x15, 0xa6,
-	0xe4, 0xc1, 0x7c, 0x0e, 0x62, 0x1b, 0xb5, 0x30, 0x72, 0x71, 0x87, 0x43, 0x4d, 0xf4, 0xa8, 0xca,
-	0x13, 0x2a, 0xe5, 0x12, 0x40, 0xd7, 0x2f, 0xa4, 0x8f, 0xcb, 0x76, 0x1c, 0x5e, 0x93, 0x32, 0x20,
-	0x5e, 0x03, 0xc4, 0x69, 0x4e, 0x16, 0x17, 0x1e, 0xca, 0x31, 0xdc, 0x78, 0x28, 0xc7, 0xf0, 0xe1,
-	0xa1, 0x1c, 0x63, 0xc3, 0x23, 0x39, 0xc6, 0x15, 0x8f, 0xe4, 0x18, 0x4f, 0x3c, 0x92, 0x63, 0xbc,
-	0xf0, 0x48, 0x8e, 0xf1, 0xc1, 0x23, 0x39, 0xc6, 0x17, 0x8f, 0xe4, 0x18, 0x3e, 0x3c, 0x92, 0x63,
-	0x9c, 0xf0, 0x58, 0x8e, 0xe1, 0xc2, 0x63, 0x39, 0x86, 0x1b, 0x8f, 0xe5, 0x18, 0xa2, 0x98, 0x0a,
-	0x92, 0x92, 0xd8, 0xc0, 0xd1, 0x6e, 0x0c, 0x08, 0x00, 0x00, 0xff, 0xff, 0x55, 0xbb, 0x16, 0xe1,
-	0x06, 0x02, 0x00, 0x00,
+	// 377 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x92, 0xb1, 0x4f, 0xf2, 0x40,
+	0x18, 0xc6, 0x7b, 0x7c, 0x40, 0xe0, 0xe5, 0x1b, 0xbe, 0x5c, 0xc8, 0x67, 0x03, 0x7a, 0x21, 0x9d,
+	0x98, 0xaa, 0x02, 0x26, 0xc4, 0x0d, 0x17, 0x31, 0x71, 0x2a, 0x83, 0x89, 0x0b, 0x29, 0x70, 0xda,
+	0x46, 0xec, 0x95, 0xde, 0x15, 0x23, 0x93, 0x6e, 0x8e, 0xfe, 0x19, 0xfe, 0x29, 0x8e, 0x8c, 0x8c,
+	0x52, 0x16, 0x47, 0xfe, 0x04, 0xd3, 0xf6, 0xca, 0x80, 0x88, 0xba, 0xbd, 0xcf, 0x9b, 0x3e, 0xf7,
+	0xfc, 0x9e, 0x37, 0x85, 0xbf, 0x9c, 0x7a, 0x63, 0xea, 0xe9, 0xae, 0xc7, 0x04, 0xc3, 0xff, 0x2d,
+	0x93, 0x5b, 0x76, 0x9f, 0x79, 0xae, 0x7e, 0x67, 0xde, 0xbb, 0xcc, 0x76, 0x44, 0xd7, 0x9a, 0x38,
+	0xda, 0x21, 0x64, 0xce, 0xcd, 0x1e, 0x1d, 0x62, 0x0c, 0x69, 0xc7, 0xbc, 0xa5, 0x2a, 0xaa, 0xa0,
+	0x6a, 0xde, 0x88, 0x66, 0x5c, 0x84, 0xcc, 0xd8, 0x1c, 0xfa, 0x54, 0x4d, 0x45, 0xcb, 0x58, 0x68,
+	0x2d, 0xc8, 0x45, 0x96, 0x0e, 0x15, 0xf8, 0x08, 0xb2, 0xc3, 0x70, 0xe6, 0x2a, 0xaa, 0xfc, 0xa9,
+	0x16, 0x6a, 0x7b, 0xfa, 0xe6, 0x1c, 0x3d, 0x72, 0x18, 0xf2, 0x63, 0xed, 0x18, 0xca, 0x06, 0xbd,
+	0xb6, 0xb9, 0xa0, 0xde, 0xa9, 0x4f, 0xb9, 0x68, 0xf5, 0xfb, 0xcc, 0x77, 0x84, 0x41, 0x47, 0xa1,
+	0xc2, 0x65, 0xc8, 0xc7, 0xf0, 0x5d, 0x7b, 0x20, 0x81, 0x72, 0xf1, 0xe2, 0x6c, 0xa0, 0x35, 0x60,
+	0x77, 0xb3, 0x97, 0xbb, 0xcc, 0xe1, 0x11, 0xb4, 0x60, 0x37, 0xd4, 0x91, 0xc6, 0x58, 0x68, 0x0c,
+	0x76, 0x12, 0x57, 0x9b, 0x71, 0x11, 0xd6, 0x4b, 0xd2, 0x4a, 0x90, 0xb3, 0xe4, 0x2a, 0x09, 0x4b,
+	0x34, 0x6e, 0xae, 0xfa, 0x85, 0x27, 0x28, 0xd4, 0x2a, 0x5b, 0xfb, 0x75, 0xa8, 0x58, 0x55, 0xd4,
+	0x41, 0xfd, 0x1c, 0x28, 0x11, 0x31, 0xa4, 0xaf, 0x46, 0x83, 0x84, 0x30, 0x9a, 0x6b, 0x4f, 0x29,
+	0x28, 0x5c, 0xc8, 0x17, 0xdb, 0x13, 0x07, 0x3f, 0x22, 0x28, 0x6e, 0xea, 0x89, 0xeb, 0x5f, 0x21,
+	0x6c, 0xb9, 0x68, 0xa9, 0xf1, 0x3b, 0x93, 0xe4, 0xf4, 0xe1, 0xdf, 0x7a, 0x07, 0xbc, 0xff, 0xdd,
+	0x4b, 0x6b, 0xe7, 0x2d, 0x1d, 0xfc, 0xdc, 0x10, 0xc7, 0x9e, 0x34, 0xa7, 0x73, 0xa2, 0xcc, 0xe6,
+	0x44, 0x59, 0xce, 0x09, 0x7a, 0x08, 0x08, 0x7a, 0x09, 0x08, 0x7a, 0x0d, 0x08, 0x9a, 0x06, 0x04,
+	0xbd, 0x05, 0x04, 0xbd, 0x07, 0x44, 0x59, 0x06, 0x04, 0x3d, 0x2f, 0x88, 0x32, 0x5d, 0x10, 0x65,
+	0xb6, 0x20, 0xca, 0x65, 0xca, 0xed, 0xf5, 0xb2, 0xd1, 0xcf, 0x5e, 0xff, 0x08, 0x00, 0x00, 0xff,
+	0xff, 0xfb, 0x91, 0x05, 0x45, 0xfc, 0x02, 0x00, 0x00,
 }
 
 func (this *Label) Equal(that interface{}) bool {
@@ -306,6 +402,54 @@ func (this *LabelSet) Equal(that interface{}) bool {
 		if !this.Labels[i].Equal(that1.Labels[i]) {
 			return false
 		}
+	}
+	return true
+}
+func (this *RegisterGuestAccountRequest) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*RegisterGuestAccountRequest)
+	if !ok {
+		that2, ok := that.(RegisterGuestAccountRequest)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.ServerId != that1.ServerId {
+		return false
+	}
+	return true
+}
+func (this *RegisterGuestAccountResponse) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*RegisterGuestAccountResponse)
+	if !ok {
+		that2, ok := that.(RegisterGuestAccountResponse)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Token != that1.Token {
+		return false
 	}
 	return true
 }
@@ -383,6 +527,26 @@ func (this *LabelSet) GoString() string {
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
+func (this *RegisterGuestAccountRequest) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&pb.RegisterGuestAccountRequest{")
+	s = append(s, "ServerId: "+fmt.Sprintf("%#v", this.ServerId)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *RegisterGuestAccountResponse) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&pb.RegisterGuestAccountResponse{")
+	s = append(s, "Token: "+fmt.Sprintf("%#v", this.Token)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
 func (this *RegisterHostnameRequest) GoString() string {
 	if this == nil {
 		return "nil"
@@ -427,6 +591,7 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type WaypointHznClient interface {
+	RegisterGuestAccount(ctx context.Context, in *RegisterGuestAccountRequest, opts ...grpc.CallOption) (*RegisterGuestAccountResponse, error)
 	RegisterHostname(ctx context.Context, in *RegisterHostnameRequest, opts ...grpc.CallOption) (*RegisterHostnameResponse, error)
 }
 
@@ -436,6 +601,15 @@ type waypointHznClient struct {
 
 func NewWaypointHznClient(cc *grpc.ClientConn) WaypointHznClient {
 	return &waypointHznClient{cc}
+}
+
+func (c *waypointHznClient) RegisterGuestAccount(ctx context.Context, in *RegisterGuestAccountRequest, opts ...grpc.CallOption) (*RegisterGuestAccountResponse, error) {
+	out := new(RegisterGuestAccountResponse)
+	err := c.cc.Invoke(ctx, "/hashicorp.waypoint_hzn.WaypointHzn/RegisterGuestAccount", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *waypointHznClient) RegisterHostname(ctx context.Context, in *RegisterHostnameRequest, opts ...grpc.CallOption) (*RegisterHostnameResponse, error) {
@@ -449,6 +623,7 @@ func (c *waypointHznClient) RegisterHostname(ctx context.Context, in *RegisterHo
 
 // WaypointHznServer is the server API for WaypointHzn service.
 type WaypointHznServer interface {
+	RegisterGuestAccount(context.Context, *RegisterGuestAccountRequest) (*RegisterGuestAccountResponse, error)
 	RegisterHostname(context.Context, *RegisterHostnameRequest) (*RegisterHostnameResponse, error)
 }
 
@@ -456,12 +631,33 @@ type WaypointHznServer interface {
 type UnimplementedWaypointHznServer struct {
 }
 
+func (*UnimplementedWaypointHznServer) RegisterGuestAccount(ctx context.Context, req *RegisterGuestAccountRequest) (*RegisterGuestAccountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RegisterGuestAccount not implemented")
+}
 func (*UnimplementedWaypointHznServer) RegisterHostname(ctx context.Context, req *RegisterHostnameRequest) (*RegisterHostnameResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterHostname not implemented")
 }
 
 func RegisterWaypointHznServer(s *grpc.Server, srv WaypointHznServer) {
 	s.RegisterService(&_WaypointHzn_serviceDesc, srv)
+}
+
+func _WaypointHzn_RegisterGuestAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RegisterGuestAccountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WaypointHznServer).RegisterGuestAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/hashicorp.waypoint_hzn.WaypointHzn/RegisterGuestAccount",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WaypointHznServer).RegisterGuestAccount(ctx, req.(*RegisterGuestAccountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _WaypointHzn_RegisterHostname_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -486,6 +682,10 @@ var _WaypointHzn_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "hashicorp.waypoint_hzn.WaypointHzn",
 	HandlerType: (*WaypointHznServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "RegisterGuestAccount",
+			Handler:    _WaypointHzn_RegisterGuestAccount_Handler,
+		},
 		{
 			MethodName: "RegisterHostname",
 			Handler:    _WaypointHzn_RegisterHostname_Handler,
@@ -565,6 +765,66 @@ func (m *LabelSet) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			i--
 			dAtA[i] = 0xa
 		}
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *RegisterGuestAccountRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *RegisterGuestAccountRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *RegisterGuestAccountRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.ServerId) > 0 {
+		i -= len(m.ServerId)
+		copy(dAtA[i:], m.ServerId)
+		i = encodeVarintServer(dAtA, i, uint64(len(m.ServerId)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *RegisterGuestAccountResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *RegisterGuestAccountResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *RegisterGuestAccountResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Token) > 0 {
+		i -= len(m.Token)
+		copy(dAtA[i:], m.Token)
+		i = encodeVarintServer(dAtA, i, uint64(len(m.Token)))
+		i--
+		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
@@ -684,6 +944,32 @@ func (m *LabelSet) Size() (n int) {
 	return n
 }
 
+func (m *RegisterGuestAccountRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.ServerId)
+	if l > 0 {
+		n += 1 + l + sovServer(uint64(l))
+	}
+	return n
+}
+
+func (m *RegisterGuestAccountResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Token)
+	if l > 0 {
+		n += 1 + l + sovServer(uint64(l))
+	}
+	return n
+}
+
 func (m *RegisterHostnameRequest) Size() (n int) {
 	if m == nil {
 		return 0
@@ -742,6 +1028,26 @@ func (this *LabelSet) String() string {
 	repeatedStringForLabels += "}"
 	s := strings.Join([]string{`&LabelSet{`,
 		`Labels:` + repeatedStringForLabels + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *RegisterGuestAccountRequest) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&RegisterGuestAccountRequest{`,
+		`ServerId:` + fmt.Sprintf("%v", this.ServerId) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *RegisterGuestAccountResponse) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&RegisterGuestAccountResponse{`,
+		`Token:` + fmt.Sprintf("%v", this.Token) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -954,6 +1260,176 @@ func (m *LabelSet) Unmarshal(dAtA []byte) error {
 			if err := m.Labels[len(m.Labels)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipServer(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthServer
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthServer
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *RegisterGuestAccountRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowServer
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: RegisterGuestAccountRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: RegisterGuestAccountRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ServerId", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServer
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthServer
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthServer
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.ServerId = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipServer(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthServer
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthServer
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *RegisterGuestAccountResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowServer
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: RegisterGuestAccountResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: RegisterGuestAccountResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Token", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServer
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthServer
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthServer
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Token = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
