@@ -10,6 +10,9 @@ import (
 	"github.com/oklog/run"
 )
 
+// hznNamespace is the namespace we use for all our Horizon API calls.
+const hznNamespace = "/waypoint"
+
 // Run initializes and starts the server. This will block until the server
 // exits (by cancelling the associated context set with WithContext or due
 // to an unrecoverable error).

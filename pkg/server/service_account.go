@@ -20,7 +20,7 @@ func (s *service) RegisterGuestAccount(
 	ctr, err := s.HznControl.CreateToken(ctx, &hznpb.CreateTokenRequest{
 		Account: &hznpb.Account{
 			AccountId: accountId,
-			Namespace: "/waypoint",
+			Namespace: hznNamespace,
 		},
 		Capabilities: []hznpb.TokenCapability{
 			{

@@ -4,6 +4,9 @@ import (
 	"context"
 	"net"
 
+	hzncontrol "github.com/hashicorp/horizon/pkg/control"
+	"github.com/hashicorp/horizon/pkg/grpc/lz4"
+	hznpb "github.com/hashicorp/horizon/pkg/pb"
 	hzntest "github.com/hashicorp/horizon/pkg/testutils/central"
 	"github.com/mitchellh/go-testing-interface"
 	"github.com/stretchr/testify/require"
@@ -109,6 +112,18 @@ func testWithHzn(t testing.T, opts *options, data *TestServerData) {
 		})
 		data.Hzn = <-setupCh
 
-		opts.HznControl = data.Hzn.MgmtClient
+		// We need a management token for our namespace
+		token, err := data.Hzn.ControlServer.GetManagementToken(context.Background(), hznNamespace)
+		require.NoError(t, err)
+
+		// New connection that uses this token
+		conn, err := grpc.Dial(data.Hzn.ServerAddr,
+			grpc.WithInsecure(),
+			grpc.WithPerRPCCredentials(hzncontrol.Token(token)),
+			grpc.WithDefaultCallOptions(grpc.UseCompressor(lz4.Name)),
+		)
+		require.NoError(t, err)
+		t.Cleanup(func() { conn.Close() })
+		opts.HznControl = hznpb.NewControlManagementClient(conn)
 	}
 }
