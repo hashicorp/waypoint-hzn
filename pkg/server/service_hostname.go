@@ -8,6 +8,9 @@ import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/horizon/pkg/dbx"
 	hznpb "github.com/hashicorp/horizon/pkg/pb"
+	"github.com/mitchellh/mapstructure"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	"github.com/hashicorp/waypoint-hzn/pkg/models"
 	"github.com/hashicorp/waypoint-hzn/pkg/pb"
@@ -18,6 +21,27 @@ func (s *service) RegisterHostname(
 	req *pb.RegisterHostnameRequest,
 ) (*pb.RegisterHostnameResponse, error) {
 	L := hclog.FromContext(ctx)
+
+	// Auth required.
+	token, err := s.checkAuth(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	// Parse our labels
+	var labels hznpb.LabelSet
+	if err := mapstructure.Decode(req.Labels, &labels); err != nil {
+		return nil, err
+	}
+
+	// Get our account registration
+	var reg models.Registration
+	if err = dbx.Check(
+		s.DB.Where("account_id = ?", token.Account().AccountId.Bytes()).First(&reg),
+	); err != nil {
+		return nil, status.Errorf(codes.PermissionDenied,
+			"unregistered account")
+	}
 
 	// Determine the full hostname
 	var hostname string
@@ -31,9 +55,9 @@ func (s *service) RegisterHostname(
 		hostname = hostname + "." + s.Domain
 
 		var host models.Hostname
-		//host.RegistrationId = reg.Id
+		host.RegistrationId = reg.Id
 		host.Hostname = hostname
-		//host.Labels = req.Labels
+		host.Labels = labels.AsStringArray()
 
 		if err := dbx.Check(s.DB.Create(&host)); err != nil {
 			// For now, assume the failure is because of failing the unique
@@ -51,11 +75,10 @@ func (s *service) RegisterHostname(
 	}
 
 	L.Debug("adding label link", "hostname", hostname, "target", req.Labels)
-	_, err := s.HznControl.AddLabelLink(ctx, &hznpb.AddLabelLinkRequest{
-		Labels: hznpb.MakeLabels(":hostname", hostname),
-		// TODO
-		//Account: account,
-		// Target: nil,
+	_, err = s.HznControl.AddLabelLink(ctx, &hznpb.AddLabelLinkRequest{
+		Labels:  hznpb.MakeLabels(":hostname", hostname),
+		Account: token.Account(),
+		Target:  &labels,
 	})
 	if err != nil {
 		return nil, err

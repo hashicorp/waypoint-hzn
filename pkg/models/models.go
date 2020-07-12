@@ -18,10 +18,8 @@ type Registration struct {
 type Hostname struct {
 	Id int `gorm:"primary_key"`
 
-	/*
-		Registration   *Registration
-		RegistrationId int
-	*/
+	Registration   *Registration
+	RegistrationId int
 
 	Hostname string
 	Labels   pq.StringArray

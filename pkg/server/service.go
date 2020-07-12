@@ -12,6 +12,9 @@ type service struct {
 	DB         *gorm.DB
 	Domain     string
 	HznControl hznpb.ControlManagementClient
+
+	// Token public key is derived from the HznControl client on startup
+	tokenPub []byte
 }
 
 var _ pb.WaypointHznServer = (*service)(nil)

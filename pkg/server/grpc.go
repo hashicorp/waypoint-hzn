@@ -3,6 +3,7 @@ package server
 import (
 	"time"
 
+	hznpb "github.com/hashicorp/horizon/pkg/pb"
 	"github.com/oklog/run"
 	"google.golang.org/grpc"
 
@@ -37,11 +38,18 @@ func grpcInit(group *run.Group, opts *options) error {
 
 	s := grpc.NewServer(so...)
 
+	// Get our public key
+	tokenInfo, err := opts.HznControl.GetTokenPublicKey(opts.Context, &hznpb.Noop{})
+	if err != nil {
+		return err
+	}
+
 	// Register our server
 	pb.RegisterWaypointHznServer(s, &service{
 		DB:         opts.DB,
 		Domain:     opts.Domain,
 		HznControl: opts.HznControl,
+		tokenPub:   tokenInfo.PublicKey,
 	})
 
 	// Add our gRPC server to the run group

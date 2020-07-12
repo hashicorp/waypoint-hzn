@@ -55,6 +55,20 @@ type TestServerData struct {
 	readyCh chan struct{}
 }
 
+// TestGuestAccount registers a guest account and returns a context that
+// can be used with auth information for future API calls.
+func TestGuestAccount(t testing.T, client pb.WaypointHznClient) grpc.CallOption {
+	resp, err := client.RegisterGuestAccount(
+		context.Background(), &pb.RegisterGuestAccountRequest{
+			ServerId: "A",
+		},
+	)
+	require.NoError(t, err)
+	require.NotEmpty(t, resp.Token)
+
+	return grpc.PerRPCCredentials(hzncontrol.Token(resp.Token))
+}
+
 func testWithDefaults(t testing.T, data *TestServerData) Option {
 	return func(opts *options) {
 		defer close(data.readyCh)
