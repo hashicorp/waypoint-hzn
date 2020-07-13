@@ -7,6 +7,8 @@ import (
 	hznpb "github.com/hashicorp/horizon/pkg/pb"
 	"github.com/oklog/run"
 	"google.golang.org/grpc"
+	grpchealth "google.golang.org/grpc/health"
+	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 
 	"github.com/hashicorp/waypoint-hzn/pkg/pb"
 )
@@ -56,8 +58,16 @@ func grpcInit(group *run.Group, opts *options) error {
 		tokenPub:   tokenInfo.PublicKey,
 	})
 
+	// Register our health check
+	hs := grpchealth.NewServer()
+	hs.SetServingStatus("", healthpb.HealthCheckResponse_NOT_SERVING)
+	healthpb.RegisterHealthServer(s, hs)
+
 	// Add our gRPC server to the run group
 	group.Add(func() error {
+		// Set our status to healthy
+		hs.SetServingStatus("", healthpb.HealthCheckResponse_SERVING)
+
 		// Serve traffic
 		ln := opts.GRPCListener
 		log.Info("starting gRPC server", "addr", ln.Addr().String())

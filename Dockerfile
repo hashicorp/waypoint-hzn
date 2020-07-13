@@ -25,6 +25,10 @@ FROM alpine
 
 COPY --from=builder /tmp/waypoint-hzn /usr/bin/waypoint-hzn
 
+RUN GRPC_HEALTH_PROBE_VERSION=v0.3.2 && \
+    wget -qO/usr/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
+    chmod +x /usr/bin/grpc_health_probe
+
 COPY ./migrations /migrations
 
 ENTRYPOINT ["/usr/bin/waypoint-hzn"]
