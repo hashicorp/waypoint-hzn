@@ -100,5 +100,22 @@ func TestServiceRegisterHostname(t *testing.T) {
 		require.NotNil(resp)
 		require.NotEmpty(resp.Fqdn)
 		require.True(strings.HasPrefix(resp.Fqdn, "foo."))
+
+		// Should be able to delete
+		{
+			resp, err := client.DeleteHostname(ctx, &pb.DeleteHostnameRequest{
+				Hostname: "foo",
+			}, optAuth)
+			require.NoError(err)
+			require.NotNil(resp)
+		}
+
+		// Should have no hostnames
+		{
+			resp, err := client.ListHostnames(ctx, &pb.ListHostnamesRequest{}, optAuth)
+			require.NoError(err)
+			require.NotNil(resp)
+			require.Len(resp.Hostnames, 0)
+		}
 	})
 }

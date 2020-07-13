@@ -688,6 +688,75 @@ var _ interface {
 	ErrorName() string
 } = ListHostnamesResponseValidationError{}
 
+// Validate checks the field values on DeleteHostnameRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *DeleteHostnameRequest) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Hostname
+
+	return nil
+}
+
+// DeleteHostnameRequestValidationError is the validation error returned by
+// DeleteHostnameRequest.Validate if the designated constraints aren't met.
+type DeleteHostnameRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e DeleteHostnameRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e DeleteHostnameRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e DeleteHostnameRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e DeleteHostnameRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e DeleteHostnameRequestValidationError) ErrorName() string {
+	return "DeleteHostnameRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e DeleteHostnameRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sDeleteHostnameRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = DeleteHostnameRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = DeleteHostnameRequestValidationError{}
+
 // Validate checks the field values on ListHostnamesResponse_Hostname with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, an error is returned.

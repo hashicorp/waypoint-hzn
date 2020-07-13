@@ -14,6 +14,7 @@ service WaypointHzn {
   rpc RegisterGuestAccount(RegisterGuestAccountRequest) returns (RegisterGuestAccountResponse);
   rpc RegisterHostname(RegisterHostnameRequest) returns (RegisterHostnameResponse);
   rpc ListHostnames(ListHostnamesRequest) returns (ListHostnamesResponse);
+  rpc DeleteHostname(DeleteHostnameRequest) returns (google.protobuf.Empty);
 }
 
 /********************************************************************
@@ -82,4 +83,8 @@ message ListHostnamesResponse {
     string hostname = 1;
     LabelSet labels = 2;
   }
+}
+
+message DeleteHostnameRequest {
+  string hostname = 1;
 }
