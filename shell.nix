@@ -30,21 +30,22 @@ let
     })];
   };
 in with pkgs; let
-  go-protobuf-gogo = buildGoModule rec {
-    pname = "go-protobuf-gogo";
-    version = "1.3.1";
+  protoc-gen-validate = buildGoModule rec {
+    pname = "protoc-gen-validate";
+    version = "0.4.0";
 
     src = fetchFromGitHub {
-      owner = "gogo";
-      repo = "protobuf";
-      rev = "v1.3.1";
-      sha256 = "0x77x64sxjgfhmbijqfzmj8h4ar25l2w97h01q3cqs1wk7zfnkhp";
+      owner = "envoyproxy";
+      repo = "protoc-gen-validate";
+      rev = "v0.4.0";
+      sha256 = "0w352i2nlsz069v28q99mz1590c3wba9f55slz51pmgyr9qlil3c";
     };
 
-    modSha256 = "0vkpqdd4x97cl3dm79mh1vic1ir4i20wv9q52sn13vr0b3kja0qy";
+    modSha256 = "1s5kxj25zw0zwqrdbcq45jv1f8g430n8ijf4c4lax6sismzgwc07";
 
-    subPackages = [ "protoc-gen-gogoslick" ];
+    subPackages = [ "." ];
   };
+
 in pkgs.mkShell rec {
   name = "horizon";
 
@@ -55,7 +56,7 @@ in pkgs.mkShell rec {
     pkgs.go-protobuf
     pkgs.protobuf3_11
     pkgs.postgresql_12
-    go-protobuf-gogo
+    protoc-gen-validate
   ];
 
   # Extra env vars

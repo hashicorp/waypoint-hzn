@@ -4,6 +4,9 @@ package hashicorp.waypoint_hzn;
 
 option go_package = "pb";
 
+import "google/protobuf/empty.proto";
+import "defs/validate.proto";
+
 // WaypointHzn is the gRPC service frontend for the more private direct
 // Horizon API. This exposes higher level operations that Waypoint uses
 // to register URLs with Horizon.
@@ -22,7 +25,7 @@ message Label {
 }
 
 message LabelSet {
-  repeated Label labels = 1;
+  repeated Label labels = 1 [(validate.rules).repeated.min_items = 1];
 }
 
 /********************************************************************
@@ -46,13 +49,23 @@ message RegisterGuestAccountResponse {
 ********************************************************************/
 
 message RegisterHostnameRequest {
-  // hostname to register, should just be a string like "api". This is
-  // a global namespace so if it is taken then an error will be returned.
-  // If this is not set or is blank, a default hostname will be generated.
-  string hostname = 1;
+  // hostname to register
+  oneof hostname {
+    option (validate.required) = true;
+
+    // auto-generate a hostname
+    google.protobuf.Empty generate = 1;
+
+    // specific hostname request
+    string exact = 2 [(validate.rules).string = {
+       min_len: 3,
+       pattern: "\\w+[\\w\\d-]*",
+       not_in: ["admin", "api", "blog", "hzn", "horizon", "waypoint"],
+    }];
+  }
 
   // labels to link this hostname to.
-  LabelSet labels = 2;
+  LabelSet labels = 3 [(validate.rules).message.required = true];
 }
 
 message RegisterHostnameResponse {
