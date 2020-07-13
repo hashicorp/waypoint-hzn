@@ -3,8 +3,11 @@ package main
 import (
 	"context"
 	"crypto/tls"
+	"flag"
 	"log"
 	"net"
+	"net/url"
+	"path/filepath"
 
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
@@ -21,9 +24,15 @@ import (
 	"github.com/hashicorp/waypoint-hzn/pkg/server"
 )
 
+var (
+	flagDev = flag.Bool("dev", false, "dev mode to run locally")
+)
+
 func main() {
+	flag.Parse()
+
 	L := hclog.New(&hclog.LoggerOptions{
-		Name:  "wpr",
+		Name:  "waypoint-hzn",
 		Level: hclog.Trace,
 	})
 	ctx := context.Background()
@@ -36,9 +45,17 @@ func main() {
 	}
 
 	// Apply migrations
-	if cfg.MigrationsApply {
-		L.Info("applying migrations")
+	if cfg.MigrationsApply || *flagDev {
+		if !filepath.IsAbs(cfg.MigrationsPath) {
+			path, err := filepath.Abs(cfg.MigrationsPath)
+			if err != nil {
+				log.Fatalf("error determining migration path: %s", err)
+			}
 
+			cfg.MigrationsPath = path
+		}
+
+		L.Info("applying migrations", "path", cfg.MigrationsPath)
 		m, err := migrate.New("file://"+cfg.MigrationsPath, cfg.DatabaseUrl)
 		if err != nil {
 			log.Fatalf("error creating migrater: %s", err)
@@ -55,7 +72,12 @@ func main() {
 	}
 
 	L.Info("connecting to database")
-	db, err := gorm.Open("postgres", cfg.DatabaseUrl)
+	u, err := url.Parse(cfg.DatabaseUrl)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	db, err := gorm.Open("postgres", migrate.FilterCustomQuery(u).String())
 	if err != nil {
 		log.Fatal(err)
 		return
@@ -103,11 +125,11 @@ func main() {
 
 type config struct {
 	ListenAddr      string `env:"LISTEN_ADDR,default=:24030"`
-	ControlAddr     string `env:"CONTROL_ADDR"`
-	ControlInsecure bool   `env:"CONTROL_INSECURE"`
-	ControlToken    string `env:"CONTROL_TOKEN"`
+	ControlAddr     string `env:"CONTROL_ADDR,default=127.0.0.1:24401"`
+	ControlInsecure bool   `env:"CONTROL_INSECURE,default=1"`
+	ControlToken    string `env:"CONTROL_TOKEN,default=aabbcc"`
 	DatabaseUrl     string `env:"DATABASE_URL"`
-	Domain          string `env:"DOMAIN"`
+	Domain          string `env:"DOMAIN,default=waypoint.localdomain"`
 	MigrationsApply bool   `env:"MIGRATIONS_APPLY"`
-	MigrationsPath  string `env:"MIGRATIONS_PATH"`
+	MigrationsPath  string `env:"MIGRATIONS_PATH,default=./migrations"`
 }

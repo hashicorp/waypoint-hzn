@@ -65,5 +65,5 @@ in pkgs.mkShell rec {
   PGDATABASE = "noop";
   PGUSER = "postgres";
   PGPASSWORD = "postgres";
-  DATABASE_URL = "postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}:${PGPORT}/${PGDATABASE}?sslmode=disable";
+  DATABASE_URL = "postgresql://${PGUSER}:${PGPASSWORD}@${PGHOST}:${PGPORT}/${PGDATABASE}?sslmode=disable&x-migrations-table=waypoint_hzn_migrations";
 }
