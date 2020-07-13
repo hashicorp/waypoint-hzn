@@ -17,6 +17,7 @@ require (
 	github.com/mitchellh/mapstructure v1.1.2
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/oklog/run v1.1.0
+	github.com/sethvargo/go-envconfig v0.2.0
 	github.com/stretchr/testify v1.5.1
 	golang.org/x/sys v0.0.0-20200615200032-f1bc736245b1 // indirect
 	google.golang.org/grpc v1.30.0
