@@ -3,6 +3,7 @@ package server
 import (
 	"time"
 
+	petname "github.com/dustinkirkland/golang-petname"
 	hznpb "github.com/hashicorp/horizon/pkg/pb"
 	"github.com/oklog/run"
 	"google.golang.org/grpc"
@@ -43,6 +44,9 @@ func grpcInit(group *run.Group, opts *options) error {
 	if err != nil {
 		return err
 	}
+
+	// Setup petname randomization
+	petname.NonDeterministicMode()
 
 	// Register our server
 	pb.RegisterWaypointHznServer(s, &service{
