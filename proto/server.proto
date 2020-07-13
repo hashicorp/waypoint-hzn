@@ -13,6 +13,7 @@ import "defs/validate.proto";
 service WaypointHzn {
   rpc RegisterGuestAccount(RegisterGuestAccountRequest) returns (RegisterGuestAccountResponse);
   rpc RegisterHostname(RegisterHostnameRequest) returns (RegisterHostnameResponse);
+  rpc ListHostnames(ListHostnamesRequest) returns (ListHostnamesResponse);
 }
 
 /********************************************************************
@@ -72,3 +73,13 @@ message RegisterHostnameResponse {
   string fqdn = 1;
 }
 
+message ListHostnamesRequest {}
+
+message ListHostnamesResponse {
+  repeated Hostname hostnames = 1;
+
+  message Hostname {
+    string hostname = 1;
+    LabelSet labels = 2;
+  }
+}

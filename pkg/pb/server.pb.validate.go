@@ -538,3 +538,232 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = RegisterHostnameResponseValidationError{}
+
+// Validate checks the field values on ListHostnamesRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *ListHostnamesRequest) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	return nil
+}
+
+// ListHostnamesRequestValidationError is the validation error returned by
+// ListHostnamesRequest.Validate if the designated constraints aren't met.
+type ListHostnamesRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListHostnamesRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListHostnamesRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListHostnamesRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListHostnamesRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListHostnamesRequestValidationError) ErrorName() string {
+	return "ListHostnamesRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListHostnamesRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListHostnamesRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListHostnamesRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListHostnamesRequestValidationError{}
+
+// Validate checks the field values on ListHostnamesResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *ListHostnamesResponse) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	for idx, item := range m.GetHostnames() {
+		_, _ = idx, item
+
+		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ListHostnamesResponseValidationError{
+					field:  fmt.Sprintf("Hostnames[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	return nil
+}
+
+// ListHostnamesResponseValidationError is the validation error returned by
+// ListHostnamesResponse.Validate if the designated constraints aren't met.
+type ListHostnamesResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListHostnamesResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListHostnamesResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListHostnamesResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListHostnamesResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListHostnamesResponseValidationError) ErrorName() string {
+	return "ListHostnamesResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListHostnamesResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListHostnamesResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListHostnamesResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListHostnamesResponseValidationError{}
+
+// Validate checks the field values on ListHostnamesResponse_Hostname with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *ListHostnamesResponse_Hostname) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Hostname
+
+	if v, ok := interface{}(m.GetLabels()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ListHostnamesResponse_HostnameValidationError{
+				field:  "Labels",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	return nil
+}
+
+// ListHostnamesResponse_HostnameValidationError is the validation error
+// returned by ListHostnamesResponse_Hostname.Validate if the designated
+// constraints aren't met.
+type ListHostnamesResponse_HostnameValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListHostnamesResponse_HostnameValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListHostnamesResponse_HostnameValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListHostnamesResponse_HostnameValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListHostnamesResponse_HostnameValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListHostnamesResponse_HostnameValidationError) ErrorName() string {
+	return "ListHostnamesResponse_HostnameValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListHostnamesResponse_HostnameValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListHostnamesResponse_Hostname.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListHostnamesResponse_HostnameValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListHostnamesResponse_HostnameValidationError{}

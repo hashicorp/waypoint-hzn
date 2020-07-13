@@ -8,6 +8,7 @@ import (
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/horizon/pkg/dbx"
 	hznpb "github.com/hashicorp/horizon/pkg/pb"
+	"github.com/jinzhu/gorm"
 	"github.com/mitchellh/mapstructure"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -95,4 +96,63 @@ func (s *service) RegisterHostname(
 	return &pb.RegisterHostnameResponse{
 		Fqdn: hostname,
 	}, nil
+}
+
+func (s *service) ListHostnames(
+	ctx context.Context,
+	req *pb.ListHostnamesRequest,
+) (*pb.ListHostnamesResponse, error) {
+	L := hclog.FromContext(ctx)
+
+	// Auth required.
+	token, err := s.checkAuth(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	// Validate
+	if err := req.Validate(); err != nil {
+		return nil, err
+	}
+
+	// Get our account registration
+	var reg models.Registration
+	if err = dbx.Check(
+		s.DB.Where("account_id = ?", token.Account().AccountId.Bytes()).First(&reg),
+	); err != nil {
+		return nil, status.Errorf(codes.PermissionDenied,
+			"unregistered account")
+	}
+
+	var hostnames []*models.Hostname
+	err = dbx.Check(s.DB.Find(&hostnames, "registration_id = ?", reg.Id))
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, status.Errorf(codes.NotFound, "unregistered account")
+		}
+
+		L.Error("error looking up hostnames for account", "registration-id", reg.Id)
+		return nil, status.Errorf(codes.Internal, "error querying hostnames")
+	}
+
+	var resp pb.ListHostnamesResponse
+	for _, h := range hostnames {
+		var hznlabels hznpb.LabelSet
+		if err := hznlabels.Scan(h.Labels); err != nil {
+			return nil, status.Errorf(codes.Internal, "error querying hostnames")
+		}
+
+		// Parse our labels
+		var labels pb.LabelSet
+		if err := mapstructure.Decode(hznlabels, &labels); err != nil {
+			return nil, err
+		}
+
+		resp.Hostnames = append(resp.Hostnames, &pb.ListHostnamesResponse_Hostname{
+			Hostname: h.Hostname,
+			Labels:   &labels,
+		})
+	}
+
+	return &resp, nil
 }

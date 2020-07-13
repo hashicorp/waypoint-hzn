@@ -44,6 +44,14 @@ func TestServiceRegisterHostname(t *testing.T) {
 		client := data.Client
 		optAuth := TestGuestAccount(t, client)
 
+		// Should have no hostnames
+		{
+			resp, err := client.ListHostnames(ctx, &pb.ListHostnamesRequest{}, optAuth)
+			require.NoError(err)
+			require.NotNil(resp)
+			require.Len(resp.Hostnames, 0)
+		}
+
 		// Get a hostname
 		resp, err := client.RegisterHostname(ctx, &pb.RegisterHostnameRequest{
 			Hostname: &pb.RegisterHostnameRequest_Generate{
@@ -59,6 +67,14 @@ func TestServiceRegisterHostname(t *testing.T) {
 		require.NoError(err)
 		require.NotNil(resp)
 		require.NotEmpty(resp.Fqdn)
+
+		// Should show up in the list
+		{
+			resp, err := client.ListHostnames(ctx, &pb.ListHostnamesRequest{}, optAuth)
+			require.NoError(err)
+			require.NotNil(resp)
+			require.Len(resp.Hostnames, 1)
+		}
 	})
 
 	t.Run("exact hostname", func(t *testing.T) {
