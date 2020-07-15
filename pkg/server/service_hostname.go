@@ -51,7 +51,7 @@ func (s *service) RegisterHostname(
 	}
 
 	// Determine the full hostname
-	var hostname string
+	var hostname, fqdn string
 	for {
 		switch v := req.Hostname.(type) {
 		case *pb.RegisterHostnameRequest_Generate:
@@ -79,24 +79,25 @@ func (s *service) RegisterHostname(
 		}
 
 		// Add the domain
-		hostname = hostname + "." + s.Domain
+		fqdn = hostname + "." + s.Domain
 
 		break
 	}
 
-	L.Debug("adding label link", "hostname", hostname, "target", req.Labels)
+	L.Debug("adding label link", "hostname", fqdn, "target", req.Labels)
 	_, err = s.HznControl.AddLabelLink(ctx, &hznpb.AddLabelLinkRequest{
-		Labels:  hznpb.MakeLabels(":hostname", hostname),
+		Labels:  hznpb.MakeLabels(":hostname", fqdn),
 		Account: token.Account(),
 		Target:  &labels,
 	})
 	if err != nil {
 		return nil, err
 	}
-	L.Info("added label link", "hostname", hostname, "target", req.Labels)
+	L.Info("added label link", "hostname", fqdn, "target", req.Labels)
 
 	return &pb.RegisterHostnameResponse{
-		Fqdn: hostname,
+		Hostname: hostname,
+		Fqdn:     fqdn,
 	}, nil
 }
 
@@ -152,6 +153,7 @@ func (s *service) ListHostnames(
 
 		resp.Hostnames = append(resp.Hostnames, &pb.ListHostnamesResponse_Hostname{
 			Hostname: h.Hostname,
+			Fqdn:     h.Hostname + "." + s.Domain,
 			Labels:   &labels,
 		})
 	}

@@ -478,6 +478,8 @@ func (m *RegisterHostnameResponse) Validate() error {
 		return nil
 	}
 
+	// no validation rules for Hostname
+
 	// no validation rules for Fqdn
 
 	return nil
@@ -766,6 +768,8 @@ func (m *ListHostnamesResponse_Hostname) Validate() error {
 	}
 
 	// no validation rules for Hostname
+
+	// no validation rules for Fqdn
 
 	if v, ok := interface{}(m.GetLabels()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {

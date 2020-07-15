@@ -71,7 +71,8 @@ message RegisterHostnameRequest {
 }
 
 message RegisterHostnameResponse {
-  string fqdn = 1;
+  string hostname = 1;
+  string fqdn = 2;
 }
 
 message ListHostnamesRequest {}
@@ -81,7 +82,8 @@ message ListHostnamesResponse {
 
   message Hostname {
     string hostname = 1;
-    LabelSet labels = 2;
+    string fqdn = 2;
+    LabelSet labels = 3;
   }
 }
 
