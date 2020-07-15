@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: waypoint-hzn
+  labels:
+    app: waypoint-hzn
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: waypoint-hzn
+  template:
+    metadata:
+      labels:
+        app: waypoint-hzn
+    spec:
+      imagePullSecrets:
+      - name: quay
+
+      containers:
+      - name: waypoint-hzn
+        image: quay.io/hashicorp/waypoint-hzn:latest
+        env:
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: waypoint-hzn-rds
+                key: url
+
+          - name: MIGRATIONS_APPLY
+            value: "1"
+
+          - name: MIGRATIONS_PATH
+            value: "/migrations"
+
+          - name: CONTROL_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: register
+                key: token
+
+          - name: CONTROL_ADDR
+            value: control.alpha.hzn.network:443
+
+          - name: CONTROL_INSECURE
+            value: "0"
+
+          - name: DOMAIN
+            value: alpha.waypoint.run
+
+          - name: LISTEN_ADDR
+            value: ":8080"
+
+        ports:
+          - name: api
+            containerPort: 8080
+
+        readinessProbe:
+          exec:
+            command: ["/usr/bin/grpc_health_probe", "-addr=:8080"]
+          initialDelaySeconds: 10
+          periodSeconds: 3
+
+        livenessProbe:
+          exec:
+            command: ["/usr/bin/grpc_health_probe", "-addr=:8080"]
+          initialDelaySeconds: 10
+          periodSeconds: 3
