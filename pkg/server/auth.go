@@ -34,7 +34,7 @@ func (s *service) checkAuth(ctx context.Context) (*token.ValidToken, error) {
 	}
 
 	account := token.Account()
-	if account.Namespace != hznNamespace {
+	if account.Namespace != s.Namespace {
 		return nil, status.Errorf(codes.PermissionDenied,
 			"invalid token")
 	}

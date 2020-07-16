@@ -54,6 +54,7 @@ func grpcInit(group *run.Group, opts *options) error {
 	pb.RegisterWaypointHznServer(s, &service{
 		DB:         opts.DB,
 		Domain:     opts.Domain,
+		Namespace:  opts.Namespace,
 		HznControl: opts.HznControl,
 		tokenPub:   tokenInfo.PublicKey,
 	})

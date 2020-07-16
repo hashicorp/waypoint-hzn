@@ -72,14 +72,18 @@ func TestGuestAccount(t testing.T, client pb.WaypointHznClient) grpc.CallOption 
 func testWithDefaults(t testing.T, data *TestServerData) Option {
 	return func(opts *options) {
 		defer close(data.readyCh)
-		testWithContext(t, opts)
-		testWithListener(t, opts, data)
-		testWithDB(t, opts, data)
-		testWithHzn(t, opts, data)
 
 		if opts.Domain == "" {
 			opts.Domain = "waypoint-hzn.localhost"
 		}
+		if opts.Namespace == "" {
+			opts.Namespace = hznNamespace
+		}
+
+		testWithContext(t, opts)
+		testWithListener(t, opts, data)
+		testWithDB(t, opts, data)
+		testWithHzn(t, opts, data)
 	}
 }
 
@@ -127,7 +131,7 @@ func testWithHzn(t testing.T, opts *options, data *TestServerData) {
 		data.Hzn = <-setupCh
 
 		// We need a management token for our namespace
-		token, err := data.Hzn.ControlServer.GetManagementToken(context.Background(), hznNamespace)
+		token, err := data.Hzn.ControlServer.GetManagementToken(context.Background(), opts.Namespace)
 		require.NoError(t, err)
 
 		// New connection that uses this token

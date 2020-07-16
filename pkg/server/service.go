@@ -11,6 +11,7 @@ import (
 type service struct {
 	DB         *gorm.DB
 	Domain     string
+	Namespace  string
 	HznControl hznpb.ControlManagementClient
 
 	// Token public key is derived from the HznControl client on startup

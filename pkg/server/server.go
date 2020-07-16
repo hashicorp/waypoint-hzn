@@ -29,6 +29,9 @@ func Run(opts ...Option) error {
 	if cfg.Logger == nil {
 		cfg.Logger = hclog.L()
 	}
+	if cfg.Namespace == "" {
+		cfg.Namespace = hznNamespace
+	}
 
 	// Setup our run group since we're going to be starting multiple
 	// goroutines for all the servers that we want to live/die as a group.
@@ -78,6 +81,9 @@ type options struct {
 
 	// Domain to use
 	Domain string
+
+	// Horizon namespace for all accounts
+	Namespace string
 }
 
 // WithContext sets the context for the server. When this context is cancelled,
@@ -111,4 +117,9 @@ func WithHznControl(client hznpb.ControlManagementClient) Option {
 // WithDomain
 func WithDomain(d string) Option {
 	return func(opts *options) { opts.Domain = d }
+}
+
+// WithNamespace
+func WithNamespace(ns string) Option {
+	return func(opts *options) { opts.Namespace = ns }
 }
