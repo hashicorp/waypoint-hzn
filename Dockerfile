@@ -12,9 +12,11 @@ WORKDIR /tmp/prime
 
 RUN mkdir -p -m 0600 ~/.ssh \
     && ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-RUN git config --system url."ssh://git@github.com/".insteadOf "https://github.com/"
-ENV GOPRIVATE=github.com/hashicorp
-RUN --mount=type=ssh go mod download
+RUN git config --global url.ssh://git@github.com/.insteadOf https://github.com/
+RUN --mount=type=ssh --mount=type=secret,id=ssh.config --mount=type=secret,id=ssh.key \
+    GIT_SSH_COMMAND="ssh -o \"ControlMaster auto\" -F \"/run/secrets/ssh.config\"" \
+    GOPRIVATE=github.com/hashicorp \
+    go mod download
 
 COPY . /tmp/src
 WORKDIR /tmp/src
