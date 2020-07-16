@@ -66,6 +66,19 @@ jobs:
   go-test:
     docker:
       - image: *GOLANG_IMAGE
+      - image: localstack/localstack:latest
+      - image: letsencrypt/pebble
+        command: ["pebble"]
+        environment:
+          PEBBLE_VA_NOSLEEP: 1
+          PEBBLE_VA_ALWAYS_VALID: 1
+      - image: circleci/postgres:11-alpine
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: waypoint_test
+      - image: vault
+        command: ["server", "-dev", "-dev-root-token-id=hznroot"]
+
     parallelism: 4
     environment:
       <<: *ENVIRONMENT
