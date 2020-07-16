@@ -13,8 +13,8 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/hashicorp/go-hclog"
-	"github.com/hashicorp/horizon/pkg/control"
 	"github.com/hashicorp/horizon/pkg/grpc/lz4"
+	grpctoken "github.com/hashicorp/horizon/pkg/grpc/token"
 	hznpb "github.com/hashicorp/horizon/pkg/pb"
 	"github.com/jinzhu/gorm"
 	"github.com/sethvargo/go-envconfig"
@@ -84,7 +84,7 @@ func main() {
 	}
 
 	opts := []grpc.DialOption{
-		grpc.WithPerRPCCredentials(control.Token(cfg.ControlToken)),
+		grpc.WithPerRPCCredentials(grpctoken.Token(cfg.ControlToken)),
 		grpc.WithDefaultCallOptions(grpc.UseCompressor(lz4.Name)),
 	}
 

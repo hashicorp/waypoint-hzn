@@ -4,8 +4,8 @@ import (
 	"context"
 	"net"
 
-	hzncontrol "github.com/hashicorp/horizon/pkg/control"
 	"github.com/hashicorp/horizon/pkg/grpc/lz4"
+	grpctoken "github.com/hashicorp/horizon/pkg/grpc/token"
 	hznpb "github.com/hashicorp/horizon/pkg/pb"
 	hzntest "github.com/hashicorp/horizon/pkg/testutils/central"
 	"github.com/mitchellh/go-testing-interface"
@@ -66,7 +66,7 @@ func TestGuestAccount(t testing.T, client pb.WaypointHznClient) grpc.CallOption 
 	require.NoError(t, err)
 	require.NotEmpty(t, resp.Token)
 
-	return grpc.PerRPCCredentials(hzncontrol.Token(resp.Token))
+	return grpc.PerRPCCredentials(grpctoken.Token(resp.Token))
 }
 
 func testWithDefaults(t testing.T, data *TestServerData) Option {
@@ -137,7 +137,7 @@ func testWithHzn(t testing.T, opts *options, data *TestServerData) {
 		// New connection that uses this token
 		conn, err := grpc.Dial(data.Hzn.ServerAddr,
 			grpc.WithInsecure(),
-			grpc.WithPerRPCCredentials(hzncontrol.Token(token)),
+			grpc.WithPerRPCCredentials(grpctoken.Token(token)),
 			grpc.WithDefaultCallOptions(grpc.UseCompressor(lz4.Name)),
 		)
 		require.NoError(t, err)

@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	empty "github.com/golang/protobuf/ptypes/empty"
-	hzncontrol "github.com/hashicorp/horizon/pkg/control"
+	grpctoken "github.com/hashicorp/horizon/pkg/grpc/token"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -31,7 +31,7 @@ func TestServiceRegisterHostname(t *testing.T) {
 					{Name: "app", Value: "test"},
 				},
 			},
-		}, grpc.PerRPCCredentials(hzncontrol.Token("NOPE")))
+		}, grpc.PerRPCCredentials(grpctoken.Token("NOPE")))
 		require.Error(err)
 		require.Equal(codes.PermissionDenied, status.Code(err))
 		require.Nil(resp)
