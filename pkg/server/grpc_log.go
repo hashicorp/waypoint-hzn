@@ -21,8 +21,11 @@ func logUnaryInterceptor(logger hclog.Logger, verbose bool) grpc.UnaryServerInte
 		handler grpc.UnaryHandler) (interface{}, error) {
 		start := time.Now()
 
+		// We don't want to log the health checks
+		skip := info.FullMethod == "/grpc.health.v1.Health/Check"
+
 		// Log the request.
-		{
+		if !skip {
 			var reqLogArgs []interface{}
 			// Log the request's attributes only if verbose is set to true.
 			if verbose {
@@ -36,7 +39,7 @@ func logUnaryInterceptor(logger hclog.Logger, verbose bool) grpc.UnaryServerInte
 		resp, err := handler(ctx, req)
 
 		// Log the response.
-		{
+		if !skip {
 			respLogArgs := []interface{}{
 				"error", err,
 				"duration", time.Since(start).String(),
