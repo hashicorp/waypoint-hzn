@@ -10,7 +10,7 @@ require (
 	github.com/golang/protobuf v1.4.2
 	github.com/hashicorp/go-hclog v0.14.1
 	github.com/hashicorp/go-multierror v1.1.0
-	github.com/hashicorp/horizon v0.0.0-20200716172631-ddc39af93cbe
+	github.com/hashicorp/horizon v0.0.0-20200717001716-a175a185844b
 	github.com/jinzhu/gorm v1.9.12
 	github.com/kr/text v0.2.0 // indirect
 	github.com/lib/pq v1.7.0

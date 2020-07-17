@@ -10,11 +10,29 @@ import (
 	"github.com/hashicorp/waypoint-hzn/pkg/pb"
 )
 
+var (
+	GuestLimits = &hznpb.Account_Limits{
+		HttpRequests: 25 / 60,   // per second
+		Bandwidth:    1024 / 60, // in KB/second
+	}
+)
+
 func (s *service) RegisterGuestAccount(
 	ctx context.Context,
 	req *pb.RegisterGuestAccountRequest,
 ) (*pb.RegisterGuestAccountResponse, error) {
 	accountId := hznpb.NewULID()
+
+	_, err := s.HznControl.AddAccount(ctx, &hznpb.AddAccountRequest{
+		Account: &hznpb.Account{
+			AccountId: accountId,
+			Namespace: s.Namespace,
+		},
+		Limits: GuestLimits,
+	})
+	if err != nil {
+		return nil, err
+	}
 
 	// Register the token with the control server
 	ctr, err := s.HznControl.CreateToken(ctx, &hznpb.CreateTokenRequest{
