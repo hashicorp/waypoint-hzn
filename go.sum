@@ -285,8 +285,6 @@ github.com/hashicorp/golang-lru v0.5.3 h1:YPkqC67at8FYaadspW/6uE0COsBxS2656RLEr8
 github.com/hashicorp/golang-lru v0.5.3/go.mod h1:iADmTwqILo4mZ8BN3D2Q6+9jd8WM5uGBxy+E8yxSoD4=
 github.com/hashicorp/hcl v1.0.0 h1:0Anlzjpi4vEasTeNFn2mLJgTSwt0+6sfsiTG8qcWGx4=
 github.com/hashicorp/hcl v1.0.0/go.mod h1:E5yfLk+7swimpb2L/Alb/PJmXilQ/rhwaUYs4T20WEQ=
-github.com/hashicorp/horizon v0.0.0-20200716172631-ddc39af93cbe h1:ytjcbGB7P0oAK+odaiA5U2GRUwGZ0m1+eNJI+8Ojv2g=
-github.com/hashicorp/horizon v0.0.0-20200716172631-ddc39af93cbe/go.mod h1:5Y/TElstO6iYU8dbZ7l9e3Wndm8NRF39zbCxPQbqtEM=
 github.com/hashicorp/horizon v0.0.0-20200717001716-a175a185844b h1:/FspEW1MYkKBwLy6xoh8Hi6DduIykAI/ZyIGbiZBk6Y=
 github.com/hashicorp/horizon v0.0.0-20200717001716-a175a185844b/go.mod h1:l600KU4y9clh+4RHdS3H5VP6+RdMnznXFrL9vg6uDnA=
 github.com/hashicorp/vault/api v1.0.5-0.20190909201928-35325e2c3262 h1:En9ph/axtiRQX8mt4+fVBOgNfEmndq5c+K0fUBviFTQ=
