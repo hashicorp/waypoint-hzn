@@ -70,6 +70,10 @@ type TestDBOptions struct {
 	ReuseDB bool
 }
 
+type nopLogger struct{}
+
+func (_ nopLogger) Print(v ...interface{}) {}
+
 // TestPostgresDB sets up the test DB to use, including running any migrations.
 // In case the ReuseDB option is set to true, this function might not create a
 // new database.
@@ -101,6 +105,8 @@ func TestPostgresDBWithOpts(t testing.T, dbName string, opts *TestDBOptions) *go
 	// a potentially existing database, create a new one, and migrate it to the
 	// latest version.
 	if !opts.ReuseDB || !postgresDBInitialized {
+		db.SetLogger(nopLogger{})
+
 		// Sometimes a Postgres database can't be dropped because of some internal
 		// Postgres housekeeping (Postgres runs as a collection of collaborating
 		// OS processes). Before trying to drop it, terminate all other connections.
