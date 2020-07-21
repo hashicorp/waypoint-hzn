@@ -118,4 +118,26 @@ func TestServiceRegisterHostname(t *testing.T) {
 			require.Len(resp.Hostnames, 0)
 		}
 	})
+
+	t.Run("rejects hostnames with double hyphen", func(t *testing.T) {
+		require := require.New(t)
+
+		data := TestServer(t)
+		client := data.Client
+		optAuth := TestGuestAccount(t, client)
+
+		// Get a hostname
+		_, err := client.RegisterHostname(ctx, &pb.RegisterHostnameRequest{
+			Hostname: &pb.RegisterHostnameRequest_Exact{
+				Exact: "foo--bar",
+			},
+
+			Labels: &pb.LabelSet{
+				Labels: []*pb.Label{
+					{Name: "app", Value: "test"},
+				},
+			},
+		}, optAuth)
+		require.Error(err)
+	})
 }
