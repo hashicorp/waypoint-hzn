@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	petname "github.com/dustinkirkland/golang-petname"
 	empty "github.com/golang/protobuf/ptypes/empty"
@@ -52,13 +53,23 @@ func (s *service) RegisterHostname(
 
 	// Determine the full hostname
 	var hostname, fqdn string
+
+trying:
 	for {
 		switch v := req.Hostname.(type) {
 		case *pb.RegisterHostnameRequest_Generate:
 			hostname = petname.Generate(3, "-")
 
+			if strings.Contains(hostname, "--") {
+				// extremely odd, but go ahead and just retry
+				continue trying
+			}
 		case *pb.RegisterHostnameRequest_Exact:
 			hostname = v.Exact
+
+			if strings.Contains(hostname, "--") {
+				return nil, fmt.Errorf("hostname must not contain a double hyphen")
+			}
 		}
 
 		var host models.Hostname
