@@ -12,7 +12,7 @@ import (
 
 var (
 	GuestLimits = &hznpb.Account_Limits{
-		HttpRequests: 25 / 60.0,   // per second
+		HttpRequests: 5,           // per second
 		Bandwidth:    1024 / 60.0, // in KB/second
 	}
 )
