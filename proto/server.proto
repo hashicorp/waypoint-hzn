@@ -39,6 +39,9 @@ message RegisterGuestAccountRequest {
   // guest account. If this server already has a guest account registered,
   // the same token will be returned.
   string server_id = 1;
+
+  // Indicates that the user accepted the TOS to access Horizon
+  bool accept_tos = 2;
 }
 
 message RegisterGuestAccountResponse {
