@@ -5,6 +5,7 @@ import (
 
 	"github.com/hashicorp/horizon/pkg/dbx"
 	hznpb "github.com/hashicorp/horizon/pkg/pb"
+	"google.golang.org/grpc/peer"
 
 	"github.com/hashicorp/waypoint-hzn/pkg/models"
 	"github.com/hashicorp/waypoint-hzn/pkg/pb"
@@ -21,7 +22,15 @@ func (s *service) RegisterGuestAccount(
 	ctx context.Context,
 	req *pb.RegisterGuestAccountRequest,
 ) (*pb.RegisterGuestAccountResponse, error) {
+	p, _ := peer.FromContext(ctx)
+
 	accountId := hznpb.NewULID()
+
+	s.Logger.Info("creating guest account",
+		"client-ip", p.Addr.String(),
+		"account-id", accountId.String(),
+		"accept-tos", req.AcceptTos,
+	)
 
 	_, err := s.HznControl.AddAccount(ctx, &hznpb.AddAccountRequest{
 		Account: &hznpb.Account{

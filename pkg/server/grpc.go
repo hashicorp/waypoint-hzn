@@ -57,6 +57,7 @@ func grpcInit(group *run.Group, opts *options) error {
 		Namespace:  opts.Namespace,
 		HznControl: opts.HznControl,
 		tokenPub:   tokenInfo.PublicKey,
+		Logger:     opts.Logger,
 	})
 
 	// Register our health check

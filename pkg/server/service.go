@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/hashicorp/go-hclog"
 	hznpb "github.com/hashicorp/horizon/pkg/pb"
 	"github.com/jinzhu/gorm"
 
@@ -13,6 +14,8 @@ type service struct {
 	Domain     string
 	Namespace  string
 	HznControl hznpb.ControlManagementClient
+
+	Logger hclog.Logger
 
 	// Token public key is derived from the HznControl client on startup
 	tokenPub []byte

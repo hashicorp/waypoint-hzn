@@ -200,6 +200,8 @@ func (m *RegisterGuestAccountRequest) Validate() error {
 
 	// no validation rules for ServerId
 
+	// no validation rules for AcceptTos
+
 	return nil
 }
 
