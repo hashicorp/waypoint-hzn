@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/hashicorp/horizon/pkg/dbx"
 	hznpb "github.com/hashicorp/horizon/pkg/pb"
@@ -31,6 +32,10 @@ func (s *service) RegisterGuestAccount(
 		"account-id", accountId.String(),
 		"accept-tos", req.AcceptTos,
 	)
+
+	if !req.AcceptTos {
+		return nil, fmt.Errorf("TOS not accepted, rejecting request to create guest account")
+	}
 
 	_, err := s.HznControl.AddAccount(ctx, &hznpb.AddAccountRequest{
 		Account: &hznpb.Account{
