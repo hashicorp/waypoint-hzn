@@ -17,7 +17,8 @@ func TestServiceRegisterGuestAccount(t *testing.T) {
 	client := data.Client
 
 	resp, err := client.RegisterGuestAccount(ctx, &pb.RegisterGuestAccountRequest{
-		ServerId: "A",
+		ServerId:  "A",
+		AcceptTos: true,
 	})
 	require.NoError(err)
 	require.NotNil(resp)

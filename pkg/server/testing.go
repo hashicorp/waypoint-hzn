@@ -60,7 +60,8 @@ type TestServerData struct {
 func TestGuestAccount(t testing.T, client pb.WaypointHznClient) grpc.CallOption {
 	resp, err := client.RegisterGuestAccount(
 		context.Background(), &pb.RegisterGuestAccountRequest{
-			ServerId: "A",
+			ServerId:  "A",
+			AcceptTos: true,
 		},
 	)
 	require.NoError(t, err)
