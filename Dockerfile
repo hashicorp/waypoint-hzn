@@ -1,6 +1,6 @@
-# syntax = docker/dockerfile:experimental
+# syntax = hashicorp.jfrog.io/docker/docker/dockerfile:experimental
 
-FROM golang:alpine AS builder
+FROM hashicorp.jfrog.io/docker/golang:alpine AS builder
 
 RUN apk add --no-cache git gcc libc-dev openssh
 
@@ -23,7 +23,7 @@ WORKDIR /tmp/src
 
 RUN --mount=type=cache,target=/root/.cache/go-build --mount=type=ssh go build -o /tmp/waypoint-hzn -ldflags "-X main.sha1ver=`git rev-parse HEAD` -X main.buildTime=$(date +'+%FT%T.%N%:z')" ./cmd/waypoint-hzn
 
-FROM alpine
+FROM hashicorp.jfrog.io/docker/alpine
 
 COPY --from=builder /tmp/waypoint-hzn /usr/bin/waypoint-hzn
 
