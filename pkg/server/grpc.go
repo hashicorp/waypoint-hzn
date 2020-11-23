@@ -3,7 +3,7 @@ package server
 import (
 	"time"
 
-	petname "github.com/dustinkirkland/golang-petname"
+	petname "github.com/hashicorp/waypoint-hzn/internal/pkg/golang-petname"
 	hznpb "github.com/hashicorp/horizon/pkg/pb"
 	"github.com/oklog/run"
 	"google.golang.org/grpc"

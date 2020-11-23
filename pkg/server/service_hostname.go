@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	petname "github.com/dustinkirkland/golang-petname"
+	petname "github.com/hashicorp/waypoint-hzn/internal/pkg/golang-petname"
 	empty "github.com/golang/protobuf/ptypes/empty"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/horizon/pkg/dbx"

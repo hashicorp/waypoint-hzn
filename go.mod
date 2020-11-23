@@ -4,7 +4,6 @@ go 1.14
 
 require (
 	github.com/aws/aws-sdk-go v1.33.6 // indirect
-	github.com/dustinkirkland/golang-petname v0.0.0-20191129215211-8e5a1ed0cff0
 	github.com/envoyproxy/protoc-gen-validate v0.1.0
 	github.com/golang-migrate/migrate/v4 v4.10.0
 	github.com/golang/protobuf v1.4.2
