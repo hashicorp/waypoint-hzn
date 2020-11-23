@@ -16,7 +16,7 @@ Some dependencies must be running for the unit tests. These are all contained
 in the Docker Compose configuration. Therefore, to run all tests:
 
 ```
-$ docker-compuse up -d
+$ docker-compose up -d
 $ go test ./... -p 1
 ```
 
