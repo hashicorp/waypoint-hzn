@@ -40,13 +40,19 @@ spec:
                 key: token
 
           - name: CONTROL_ADDR
-            value: control.alpha.hzn.network:443
+            valueFrom:
+              configMapKeyRef:
+                name: wp-hzn
+                key: control_addr
 
           - name: CONTROL_INSECURE
             value: "0"
 
           - name: DOMAIN
-            value: alpha.waypoint.run
+            valueFrom:
+              configMapKeyRef:
+                name: wp-hzn
+                key: domain
 
           - name: LISTEN_ADDR
             value: ":8080"
