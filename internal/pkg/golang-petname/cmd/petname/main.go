@@ -24,7 +24,7 @@ import (
 	"fmt"
 	"math/rand"
 	"time"
-	"github.com/dustinkirkland/golang-petname"
+	"github.com/hashicorp/waypoint-hzn/internal/pkg/golang-petname"
 )
 
 var (
