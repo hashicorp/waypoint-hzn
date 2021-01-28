@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"strings"
 
-	petname "github.com/hashicorp/waypoint-hzn/internal/pkg/golang-petname"
 	empty "github.com/golang/protobuf/ptypes/empty"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/horizon/pkg/dbx"
 	hznpb "github.com/hashicorp/horizon/pkg/pb"
+	petname "github.com/hashicorp/waypoint-hzn/internal/pkg/golang-petname"
 	"github.com/jinzhu/gorm"
 	"github.com/mitchellh/mapstructure"
 	"google.golang.org/grpc/codes"
@@ -17,6 +17,12 @@ import (
 
 	"github.com/hashicorp/waypoint-hzn/pkg/models"
 	"github.com/hashicorp/waypoint-hzn/pkg/pb"
+)
+
+var (
+	// testLabelLinkFailed if set will cause the AddLabelLink to always fail.
+	// This is used for tests.
+	testLabelLinkFailed bool
 )
 
 func (s *service) RegisterHostname(
@@ -101,7 +107,23 @@ trying:
 		Account: token.Account(),
 		Target:  &labels,
 	})
+	if err == nil && testLabelLinkFailed {
+		err = fmt.Errorf("forced err by setting testLabelLinkFailed")
+	}
 	if err != nil {
+		// We need to delete our record we created earlier since the
+		// creation failed.
+		if derr := dbx.Check(s.DB.Delete(
+			models.Hostname{},
+			"registration_id = ? and hostname = ?", reg.Id, hostname),
+		); derr != nil {
+			// If we fail, the best we can do is make a loud log message
+			// since we're already returning an error to the user anyways.
+			L.Error("error deleting hostname after label link failed, dangling hosname",
+				"hostname", fqdn,
+				"err", derr)
+		}
+
 		return nil, err
 	}
 	L.Info("added label link", "hostname", fqdn, "target", req.Labels)

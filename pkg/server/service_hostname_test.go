@@ -140,4 +140,46 @@ func TestServiceRegisterHostname(t *testing.T) {
 		}, optAuth)
 		require.Error(err)
 	})
+
+	t.Run("context cancellation doesn't dangle hostname", func(t *testing.T) {
+		require := require.New(t)
+
+		data := TestServer(t)
+		client := data.Client
+		optAuth := TestGuestAccount(t, client)
+
+		// Should have no hostnames
+		{
+			resp, err := client.ListHostnames(ctx, &pb.ListHostnamesRequest{}, optAuth)
+			require.NoError(err)
+			require.NotNil(resp)
+			require.Len(resp.Hostnames, 0)
+		}
+
+		// Create an expired context
+		testLabelLinkFailed = true
+		defer func() { testLabelLinkFailed = false }()
+
+		// Get a hostname
+		_, err := client.RegisterHostname(ctx, &pb.RegisterHostnameRequest{
+			Hostname: &pb.RegisterHostnameRequest_Generate{
+				Generate: &empty.Empty{},
+			},
+
+			Labels: &pb.LabelSet{
+				Labels: []*pb.Label{
+					{Name: "app", Value: "test"},
+				},
+			},
+		}, optAuth)
+		require.Error(err)
+
+		// Should not show up in the list
+		{
+			resp, err := client.ListHostnames(ctx, &pb.ListHostnamesRequest{}, optAuth)
+			require.NoError(err)
+			require.NotNil(resp)
+			require.Len(resp.Hostnames, 0)
+		}
+	})
 }
