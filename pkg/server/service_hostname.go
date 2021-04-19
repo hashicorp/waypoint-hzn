@@ -27,8 +27,7 @@ var (
 
 func (s *service) RegisterHostname(
 	ctx context.Context,
-	req *pb.RegisterHostnameRequest,
-) (*pb.RegisterHostnameResponse, error) {
+	req *pb.RegisterHostnameRequest) (*pb.RegisterHostnameResponse, error) {
 	L := hclog.FromContext(ctx)
 
 	// Auth required.
@@ -136,8 +135,7 @@ trying:
 
 func (s *service) ListHostnames(
 	ctx context.Context,
-	req *pb.ListHostnamesRequest,
-) (*pb.ListHostnamesResponse, error) {
+	req *pb.ListHostnamesRequest) (*pb.ListHostnamesResponse, error) {
 	L := hclog.FromContext(ctx)
 
 	// Auth required.
@@ -196,8 +194,7 @@ func (s *service) ListHostnames(
 
 func (s *service) DeleteHostname(
 	ctx context.Context,
-	req *pb.DeleteHostnameRequest,
-) (*empty.Empty, error) {
+	req *pb.DeleteHostnameRequest) (*empty.Empty, error) {
 	L := hclog.FromContext(ctx)
 
 	// Auth required.

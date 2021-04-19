@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  postgres:
+    image: "postgres:12.3"
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_DB=noop
+      - POSTGRES_PASSWORD=postgres
+
+  vault:
+    image: vault
+    ports:
+      - 8201:8200
+    command: vault server -dev -dev-root-token-id=hznroot
+    environment:
+      - VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200

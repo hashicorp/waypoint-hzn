@@ -13,3 +13,12 @@ docker/evanphx:
 					--ssh default \
 					-t waypoint-hzn:latest \
 					.
+
+.PHONY: proto
+proto:
+	protoc -I proto/ \
+		--go_out=pkg/pb/ --go_opt=paths=source_relative \
+		--go-grpc_out=pkg/pb/ --go-grpc_opt=paths=source_relative \
+		--validate_out="lang=go:pkg/pb/" \
+		--validate_opt=paths=source_relative \
+		proto/server.proto

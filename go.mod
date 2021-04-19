@@ -4,9 +4,9 @@ go 1.14
 
 require (
 	github.com/aws/aws-sdk-go v1.33.6 // indirect
-	github.com/envoyproxy/protoc-gen-validate v0.1.0
+	github.com/envoyproxy/protoc-gen-validate v0.5.1
 	github.com/golang-migrate/migrate/v4 v4.10.0
-	github.com/golang/protobuf v1.4.2
+	github.com/golang/protobuf v1.5.0
 	github.com/hashicorp/go-hclog v0.14.1
 	github.com/hashicorp/go-multierror v1.1.0
 	github.com/hashicorp/horizon v0.0.0-20200717001716-a175a185844b
@@ -20,13 +20,12 @@ require (
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/oklog/run v1.1.0
 	github.com/sethvargo/go-envconfig v0.2.0
-	github.com/stretchr/testify v1.5.1
+	github.com/stretchr/testify v1.6.1
 	golang.org/x/crypto v0.0.0-20200709230013-948cd5f35899 // indirect
 	golang.org/x/net v0.0.0-20200707034311-ab3426394381 // indirect
 	golang.org/x/sys v0.0.0-20200625212154-ddb9806d33ae // indirect
-	golang.org/x/text v0.3.3 // indirect
 	google.golang.org/genproto v0.0.0-20200715011427-11fb19a81f2c // indirect
-	google.golang.org/grpc v1.30.0
-	google.golang.org/protobuf v1.25.0
+	google.golang.org/grpc v1.37.0
+	google.golang.org/protobuf v1.26.0
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 )

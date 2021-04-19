@@ -72,6 +72,9 @@ type options struct {
 	// random loopback port will be chosen. The gRPC server must run since it
 	// serves the HTTP endpoints as well.
 	GRPCListener net.Listener
+	// GRPCReflection flag determines whether GRPC should expose a reflection endpoint
+	// so that clients can see the endpoints.
+	GRPCReflection bool
 
 	// PostgreSQL DB connection.
 	DB *gorm.DB
@@ -83,7 +86,7 @@ type options struct {
 	Domain string
 
 	// Horizon namespace for all accounts
-	Namespace string
+	Namespace      string
 }
 
 // WithContext sets the context for the server. When this context is cancelled,
@@ -100,8 +103,12 @@ func WithLogger(log hclog.Logger) Option {
 // WithGRPC sets the GRPC listener. This listener must be closed manually
 // by the caller. Prior to closing the listener, it is recommended that you
 // cancel the context set with WithContext and wait for Run to return.
-func WithGRPC(ln net.Listener) Option {
-	return func(opts *options) { opts.GRPCListener = ln }
+func WithGRPC(ln net.Listener, reflectionEnabled bool) Option {
+
+	return func(opts *options) {
+		opts.GRPCListener = ln
+		opts.GRPCReflection = reflectionEnabled
+	}
 }
 
 // WithDB sets the DB connection.

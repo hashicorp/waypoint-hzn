@@ -3,7 +3,6 @@ package server
 import (
 	"context"
 	"fmt"
-
 	"github.com/hashicorp/horizon/pkg/dbx"
 	hznpb "github.com/hashicorp/horizon/pkg/pb"
 	"google.golang.org/grpc/peer"
@@ -21,8 +20,7 @@ var (
 
 func (s *service) RegisterGuestAccount(
 	ctx context.Context,
-	req *pb.RegisterGuestAccountRequest,
-) (*pb.RegisterGuestAccountResponse, error) {
+	req *pb.RegisterGuestAccountRequest) (*pb.RegisterGuestAccountResponse, error) {
 	p, _ := peer.FromContext(ctx)
 
 	accountId := hznpb.NewULID()
