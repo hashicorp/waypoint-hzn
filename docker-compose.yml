@@ -1,15 +1,6 @@
 version: '3'
 
 services:
-  pebble:
-   image: letsencrypt/pebble
-   command: pebble
-   ports:
-     - 14000:14000  # ACME port
-     - 15000:15000  # Management port
-   environment:
-     - PEBBLE_VA_NOSLEEP=1
-     - PEBBLE_VA_ALWAYS_VALID=1
 
   localstack:
     image: localstack/localstack
@@ -31,7 +22,7 @@ services:
   postgres:
     image: "postgres:12.3"
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
       - POSTGRES_DB=noop
       - POSTGRES_PASSWORD=postgres
@@ -39,7 +30,7 @@ services:
   vault:
     image: vault
     ports:
-      - 8200:8200
+      - 8201:8200
     command: vault server -dev -dev-root-token-id=hznroot
     environment:
       - VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200

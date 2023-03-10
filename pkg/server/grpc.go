@@ -1,10 +1,11 @@
 package server
 
 import (
+	"google.golang.org/grpc/reflection"
 	"time"
 
-	petname "github.com/hashicorp/waypoint-hzn/internal/pkg/golang-petname"
 	hznpb "github.com/hashicorp/horizon/pkg/pb"
+	petname "github.com/hashicorp/waypoint-hzn/internal/pkg/golang-petname"
 	"github.com/oklog/run"
 	"google.golang.org/grpc"
 	grpchealth "google.golang.org/grpc/health"
@@ -73,6 +74,9 @@ func grpcInit(group *run.Group, opts *options) error {
 		// Serve traffic
 		ln := opts.GRPCListener
 		log.Info("starting gRPC server", "addr", ln.Addr().String())
+		if opts.GRPCReflection {
+			reflection.Register(s)
+		}
 		return s.Serve(ln)
 	}, func(err error) {
 		// Graceful in a goroutine so we can timeout

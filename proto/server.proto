@@ -2,10 +2,10 @@ syntax = "proto3";
 
 package hashicorp.waypoint_hzn;
 
-option go_package = "pb";
+option go_package = "github.com/hashicorp/waypoint-hzn/pb";
 
 import "google/protobuf/empty.proto";
-import "defs/validate.proto";
+import "validate.proto";
 
 // WaypointHzn is the gRPC service frontend for the more private direct
 // Horizon API. This exposes higher level operations that Waypoint uses
