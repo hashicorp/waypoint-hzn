@@ -2,7 +2,7 @@ name: hashicorp/waypoint-hzn/go-tests
 on:
   push:
     branches:
-    - main
+      - main
 env:
   GH_DOCKER_USER: xxxxxxx
 jobs:
@@ -19,21 +19,21 @@ jobs:
       BASH_ENV: ".circleci/bash_env.sh"
       DOCKER_BUILDKIT: 1
     steps:
-    # Ensure parameter if_key_exists is set correctly
-    - name: Install SSH key
-      uses: shimataro/ssh-key-action@685d0f20da72e4b53cc81d373a2ed0a867770e46 # v2.5.1
-      with:
-        key: "${{ secrets.CIRCLE_CI_SSH_KEY }}"
-        name: circle_ci_id_rsa
-        known_hosts: "${{ secrets.CIRCLE_CI_KNOWN_HOSTS }}"
-        if_key_exists: fail
-    - uses: actions/checkout@83b7061638ee4956cf7545a6f7efe594e5ad0247 # v3.5.1
-    - run: go mod tidy
-    - run: |
-        if ! git diff --exit-code; then
-          echo "Git directory has vendor changes"
-          exit 1
-        fi
+      # Ensure parameter if_key_exists is set correctly
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@685d0f20da72e4b53cc81d373a2ed0a867770e46 # v2.5.1
+        with:
+          key: "${{ secrets.CIRCLE_CI_SSH_KEY }}"
+          name: circle_ci_id_rsa
+          known_hosts: "${{ secrets.CIRCLE_CI_KNOWN_HOSTS }}"
+          if_key_exists: fail
+      - uses: actions/checkout@83b7061638ee4956cf7545a6f7efe594e5ad0247 # v3.5.1
+      - run: go mod tidy
+      - run: |
+          if ! git diff --exit-code; then
+            echo "Git directory has vendor changes"
+            exit 1
+          fi
   lint:
     runs-on: ubuntu-latest
     container:
@@ -41,27 +41,27 @@ jobs:
     env:
       GOTAGS: ''
     steps:
-    # Ensure parameter if_key_exists is set correctly
-    - name: Install SSH key
-      uses: shimataro/ssh-key-action@685d0f20da72e4b53cc81d373a2ed0a867770e46 # v2.5.1
-      with:
-        key: "${{ secrets.CIRCLE_CI_SSH_KEY }}"
-        name: circle_ci_id_rsa
-        known_hosts: "${{ secrets.CIRCLE_CI_KNOWN_HOSTS }}"
-        if_key_exists: fail
-    - uses: actions/checkout@83b7061638ee4956cf7545a6f7efe594e5ad0247 # v3.5.1
-    - name: Install golangci-lint
-      run: |-
-        download=https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh
-        wget -O- -q $download | sh -x -s -- -d -b /go/bin/ v1.27.0
-    - run: go mod download
-    - name: lint
-      run: |-
-        golangci-lint run --build-tags="$GOTAGS" -v --concurrency 2 \
-          --disable-all \
-          --timeout 10m \
-          --enable gosimple \
-          --enable govet
+      # Ensure parameter if_key_exists is set correctly
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@685d0f20da72e4b53cc81d373a2ed0a867770e46 # v2.5.1
+        with:
+          key: "${{ secrets.CIRCLE_CI_SSH_KEY }}"
+          name: circle_ci_id_rsa
+          known_hosts: "${{ secrets.CIRCLE_CI_KNOWN_HOSTS }}"
+          if_key_exists: fail
+      - uses: actions/checkout@83b7061638ee4956cf7545a6f7efe594e5ad0247 # v3.5.1
+      - name: Install golangci-lint
+        run: |-
+          download=https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh
+          wget -O- -q $download | sh -x -s -- -d -b /go/bin/ v1.27.0
+      - run: go mod download
+      - name: lint
+        run: |-
+          golangci-lint run --build-tags="$GOTAGS" -v --concurrency 2 \
+            --disable-all \
+            --timeout 10m \
+            --enable gosimple \
+            --enable govet
   dev-build:
     runs-on: ubuntu-latest
     container:
@@ -75,22 +75,22 @@ jobs:
       BASH_ENV: ".circleci/bash_env.sh"
       DOCKER_BUILDKIT: 1
     steps:
-    # Ensure parameter if_key_exists is set correctly
-    - name: Install SSH key
-      uses: shimataro/ssh-key-action@685d0f20da72e4b53cc81d373a2ed0a867770e46 # v2.5.1
-      with:
-        key: "${{ secrets.CIRCLE_CI_SSH_KEY }}"
-        name: circle_ci_id_rsa
-        known_hosts: "${{ secrets.CIRCLE_CI_KNOWN_HOSTS }}"
-        if_key_exists: fail
-    - uses: actions/checkout@83b7061638ee4956cf7545a6f7efe594e5ad0247 # v3.5.1
-    - uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # v3.0.2
-      with:
-        path: "."
-    - run: go build -o /go/bin/waypoint-hzn ./cmd/waypoint-hzn
-    - uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
-      with:
-        path: "/go/bin/waypoint-hzn"
+      # Ensure parameter if_key_exists is set correctly
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@685d0f20da72e4b53cc81d373a2ed0a867770e46 # v2.5.1
+        with:
+          key: "${{ secrets.CIRCLE_CI_SSH_KEY }}"
+          name: circle_ci_id_rsa
+          known_hosts: "${{ secrets.CIRCLE_CI_KNOWN_HOSTS }}"
+          if_key_exists: fail
+      - uses: actions/checkout@83b7061638ee4956cf7545a6f7efe594e5ad0247 # v3.5.1
+      - uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # v3.0.2
+        with:
+          path: "."
+      - run: go build -o /go/bin/waypoint-hzn ./cmd/waypoint-hzn
+      - uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
+        with:
+          path: "/go/bin/waypoint-hzn"
   go-test:
     runs-on: ubuntu-latest
     container:
@@ -123,39 +123,41 @@ jobs:
       GOTAGS: ''
       GOMAXPROCS: 4
     steps:
-    # Ensure parameter if_key_exists is set correctly
-    - name: Install SSH key
-      uses: shimataro/ssh-key-action@685d0f20da72e4b53cc81d373a2ed0a867770e46 # v2.5.1
-      with:
-        key: "${{ secrets.CIRCLE_CI_SSH_KEY }}"
-        name: circle_ci_id_rsa
-        known_hosts: "${{ secrets.CIRCLE_CI_KNOWN_HOSTS }}"
-        if_key_exists: fail
-    - uses: actions/checkout@83b7061638ee4956cf7545a6f7efe594e5ad0247 # v3.5.1
-    - uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # v3.0.2
-      with:
-        path: "/go/bin"
-#     # 'setup_remote_docker' was not transformed because there is no suitable equivalent in GitHub Actions
-    - name: Install gotestsum
-      run: |-
-        url=https://github.com/gotestyourself/gotestsum/releases/download
-        curl -sSL "${url}/v${GOTESTSUM_RELEASE}/gotestsum_${GOTESTSUM_RELEASE}_linux_amd64.tar.gz" | \
-          sudo tar -xz --overwrite -C /usr/local/bin gotestsum
-    - run: go mod download
-    - name: go test
-      run: |-
-        mkdir -p $TEST_RESULTS_DIR
-        PACKAGE_NAMES=$(go list ./... | circleci tests split --split-by=timings --timings-type=classname)
-        echo "Running $(echo $PACKAGE_NAMES | wc -w) packages"
-        echo $PACKAGE_NAMES
-        gotestsum --format=short-verbose \
-          --junitfile $TEST_RESULTS_DIR/gotestsum-report.xml -- \
-          -tags="$GOTAGS" -p 2 \
-          -cover -coverprofile=coverage.txt \
-          $PACKAGE_NAMES
-    - uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
-      with:
-        path: "/tmp/test-results"
-    - uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
-      with:
-        path: "/tmp/test-results"
+      # Ensure parameter if_key_exists is set correctly
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@685d0f20da72e4b53cc81d373a2ed0a867770e46 # v2.5.1
+        with:
+          key: "${{ secrets.CIRCLE_CI_SSH_KEY }}"
+          name: circle_ci_id_rsa
+          known_hosts: "${{ secrets.CIRCLE_CI_KNOWN_HOSTS }}"
+          if_key_exists: fail
+      - uses: actions/checkout@83b7061638ee4956cf7545a6f7efe594e5ad0247 # v3.5.1
+      - uses: actions/download-artifact@9bc31d5ccc31df68ecc42ccf4149144866c47d8a # v3.0.2
+        with:
+          path: "/go/bin"
+          #     # 'setup_remote_docker' was not transformed because there is no suitable equivalent in GitHub Actions
+      - name: Install gotestsum
+        run: |-
+          url=https://github.com/gotestyourself/gotestsum/releases/download
+          curl -sSL "${url}/v${GOTESTSUM_RELEASE}/gotestsum_${GOTESTSUM_RELEASE}_linux_amd64.tar.gz" | \
+            sudo tar -xz --overwrite -C /usr/local/bin gotestsum
+      - run: go mod download
+      - name: go test
+        run: |-
+          mkdir -p $TEST_RESULTS_DIR
+          PACKAGE_NAMES=$(go list ./... | circleci tests split --split-by=timings --timings-type=classname)
+          echo "Running $(echo $PACKAGE_NAMES | wc -w) packages"
+          echo $PACKAGE_NAMES
+          gotestsum --format=short-verbose \
+            --junitfile $TEST_RESULTS_DIR/gotestsum-report.xml -- \
+            -tags="$GOTAGS" -p 2 \
+            -cover -coverprofile=coverage.txt \
+            $PACKAGE_NAMES
+      - uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
+        with:
+          path: "/tmp/test-results"
+      - uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
+        with:
+          path: "/tmp/test-results"
+permissions:
+  contents: read
