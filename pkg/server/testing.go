@@ -25,6 +25,7 @@ func TestServer(t testing.T, opts ...Option) *TestServerData {
 	// Create the server
 	var data TestServerData
 	data.readyCh = make(chan struct{})
+	//nolint:all
 	go Run(
 		append(
 			append([]Option{}, opts...),
