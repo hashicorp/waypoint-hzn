@@ -1,0 +1,109 @@
+name: hashicorp/waypoint-hzn/go-tests
+on:
+  push:
+    branches:
+      - main
+jobs:
+  check-vendor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@83b7061638ee4956cf7545a6f7efe594e5ad0247 # v3.5.1
+      - uses: actions/setup-go@6edd4406fa81c3da01a34fa6f6343087c207a568 # https://github.com/actions/setup-go/releases/tag/v3.5.0
+        with:
+          go-version-file: go.mod
+      - run: go mod tidy
+      - run: |
+          if ! git diff --exit-code; then
+            echo "Git directory has vendor changes"
+            exit 1
+          fi
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          cache: true
+          cache-dependency-path: go.sum
+          go-version-file: go.mod
+      - uses: golangci/golangci-lint-action@v3.2.0
+        with:
+          version: v1.50.0
+          args: --timeout 3m00s
+          skip-pkg-cache: true
+          skip-build-cache: true
+  dev-build:
+    runs-on: ubuntu-latest
+    outputs:
+      go-version: ${{ steps.go-version.outputs.go-version }}
+    steps:
+      - uses: actions/checkout@83b7061638ee4956cf7545a6f7efe594e5ad0247 # v3.5.1
+      - uses: actions/setup-go@6edd4406fa81c3da01a34fa6f6343087c207a568 # https://github.com/actions/setup-go/releases/tag/v3.5.0
+        with:
+          go-version-file: go.mod
+      - id: go-version
+        run: echo "go-version=$(cat ./.go-version)" >> "$GITHUB_OUTPUT"
+      - uses: hashicorp/actions-go-build@v0.1.7
+        with:
+          go_version: ${{ steps.go-version.outputs.go-version }}
+          os: linux
+          arch: amd64
+          reproducible: nope
+          # TODO: inquire about versioning
+          instructions: |-
+            mkdir -p dist
+            go build -o dist ./cmd/waypoint-hzn
+  go-test:
+    runs-on: ubuntu-latest
+    env:
+      TEST_RESULTS_DIR: "/tmp/test-results"
+      GO_TAGS: server
+      GOTESTSUM_RELEASE: 1.8.2
+
+    steps:
+      - uses: actions/checkout@83b7061638ee4956cf7545a6f7efe594e5ad0247 # v3.5.1
+      - name: Start Services
+        run: |-
+          docker compose -f .github/services/go-tests/docker-compose.yml up --detach --no-color --wait
+      - uses: actions/setup-go@d0a58c1c4d2b25278816e339b944508c875f3613
+        with:
+          go-version-file: './go.mod'
+      - name: Install gotestsum
+        run: |-
+          url=https://github.com/gotestyourself/gotestsum/releases/download
+          curl -sSL "${url}/v${GOTESTSUM_RELEASE}/gotestsum_${GOTESTSUM_RELEASE}_linux_amd64.tar.gz" | \
+            sudo tar -xz --overwrite -C /usr/local/bin gotestsum
+      - run: go mod download
+      - name: Waiting for Postgres to be ready
+        run: |-
+          for _ in $(seq 1 10);
+          do
+            nc -z localhost 5432 && echo Success && exit 0
+            echo -n .
+            sleep 1
+          done
+          echo Failed waiting for Postgres && exit 1
+      - name: go test
+        env:
+          PACKAGE_NAMES: ./...
+          POSTGRES_USER: postgres
+          POSTGRES_DB: waypoint_test
+        run: |-
+          mkdir -p "$TEST_RESULTS_DIR"
+          echo "Testing \"$PACKAGE_NAMES\""
+          gotestsum --format=short-verbose \
+            --junitfile "$TEST_RESULTS_DIR"/gotestsum-report.xml -- \
+            -tags="$GOTAGS" -p 2 \
+            -cover -coverprofile=coverage.txt \
+            "$PACKAGE_NAMES"
+      - uses: actions/upload-artifact@0b7f8abb1508181956e8e162db84b466c27e18ce # v3.1.2
+        with:
+          name: test-results
+          path: "/tmp/test-results"
+
+      - name: Stop containers
+        if: always()
+        run: |-
+          docker compose -f .github/services/go-tests/docker-compose.yml down
+permissions:
+  contents: read
