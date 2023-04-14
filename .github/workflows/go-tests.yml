@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - main
-      # TODO: remove before merging
-      - convert-hashicorp-waypoint-hzn-to-actions-20230412-181424
 jobs:
   check-vendor:
     runs-on: ubuntu-latest
