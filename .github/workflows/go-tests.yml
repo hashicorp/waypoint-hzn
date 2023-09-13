@@ -43,7 +43,7 @@ jobs:
           go-version-file: go.mod
       - id: go-version
         run: echo "go-version=$(cat ./.go-version)" >> "$GITHUB_OUTPUT"
-      - uses: hashicorp/actions-go-build@v0.1.7
+      - uses: hashicorp/actions-go-build@v0.1.9
         with:
           go_version: ${{ steps.go-version.outputs.go-version }}
           os: linux
