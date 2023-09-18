@@ -1,3 +1,6 @@
+-- Copyright (c) HashiCorp, Inc.
+-- SPDX-License-Identifier: MPL-2.0
+
 CREATE TABLE IF NOT EXISTS registrations (
   id SERIAL PRIMARY KEY,
   account_id bytea NOT NULL UNIQUE,

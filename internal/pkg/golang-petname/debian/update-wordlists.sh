@@ -1,4 +1,7 @@
 #!/bin/sh
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 
 # This script only needs to be run by the upstream package maintainer (Dustin Kirkland)
 # if the upstream petname wordlists change
